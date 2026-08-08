@@ -89,4 +89,4 @@ Ask whether the company carries liability insurance, whether the pieces are suit
 
 If you are comparing options, our guide to the [best yard games for parties](/blog/best-yard-games-for-parties/) explains the space and crowd fit for eleven popular choices.
 
-Planning a wedding in Raleigh, Durham, Chapel Hill, or nearby? [Check your date](/#availability) and we will recommend a game count and layout for your guest list.
+Planning a wedding in Raleigh, Durham, Chapel Hill, or nearby? [Request your date](/#availability) and we will recommend a game count and layout for your guest list.

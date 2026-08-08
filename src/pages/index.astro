@@ -29,7 +29,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
   <body>
     <div class="announcement">
       <p>Now booking the Triangle</p>
-      <a href="#availability">Check your date <span aria-hidden="true">↗</span></a>
+      <a href="#availability">Request your date <span aria-hidden="true">↗</span></a>
     </div>
 
     <header class="site-header">
@@ -43,7 +43,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
         <a href="#how-it-works">How it works</a>
         <a href="/blog/">Playbook</a>
       </nav>
-      <a class="button button-small button-dark" href="#availability">Check your date</a>
+      <a class="button button-small button-dark" href="#availability">Request your date</a>
     </header>
 
     <main id="top">
@@ -79,8 +79,9 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
 
       <section class="availability-wrap" id="availability">
         <div class="availability-intro">
-          <p class="eyebrow">Party planning, minus the back-and-forth</p>
-          <h2>First, let’s see what’s free.</h2>
+          <p class="eyebrow">A quick availability request</p>
+          <h2>Tell us when and where.</h2>
+          <p>We’ll personally confirm the games and delivery window before you pay anything.</p>
         </div>
         <form class="availability-form" id="availability-form" novalidate>
           <label>
@@ -113,7 +114,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
               <option>Something else</option>
             </select>
           </label>
-          <button class="button button-accent" type="submit">Show available rentals</button>
+          <button class="button button-accent" type="submit">Choose a rental set</button>
           <p class="form-message" id="availability-message" aria-live="polite"></p>
         </form>
       </section>
@@ -278,7 +279,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
       <section class="final-cta">
         <p class="eyebrow">Your date won’t plan itself</p>
         <h2>Let’s make it a<br /><em>play date.</em></h2>
-        <a class="button button-accent" href="#availability">Check availability</a>
+        <a class="button button-accent" href="#availability">Request your date</a>
         <div class="cta-star" aria-hidden="true">★</div>
       </section>
     </main>
@@ -300,7 +301,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
     <dialog class="booking-dialog" id="booking-dialog">
       <button class="dialog-close" type="button" aria-label="Close booking form">×</button>
       <p class="eyebrow">Excellent choice</p>
-      <h2 id="dialog-title">Let’s hold your date.</h2>
+      <h2 id="dialog-title">Request your date.</h2>
       <p id="dialog-summary">Tell us where to send the details.</p>
       <form
         id="booking-form"

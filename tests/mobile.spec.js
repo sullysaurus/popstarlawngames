@@ -13,9 +13,11 @@ test("mobile booking flow preserves event details and reaches a send path", asyn
   await page.locator("#event-zip").fill("27601");
   await page.locator("#event-type").selectOption({ label: "Wedding" });
   await page.locator("#availability-form button").click();
+  await expect(page.locator("#availability-message")).toContainText("personally confirm October 24, 2026");
 
   await page.locator(".package-select").first().click();
   await expect(page.locator("#booking-dialog")).toBeVisible();
+  await expect(page.locator("#dialog-summary")).toContainText("October 24, 2026");
   await expect(page.locator("#selected-event-date")).toHaveValue("2026-10-24");
   await expect(page.locator("#selected-event-zip")).toHaveValue("27601");
   await expect(page.locator("#selected-event-type")).toHaveValue("Wedding");
@@ -26,6 +28,12 @@ test("mobile booking flow preserves event details and reaches a send path", asyn
 
   await expect(page.locator("#dialog-message")).toContainText(/request is in|email app is opening/);
   await expect(page.locator("#booking-submit")).toBeEnabled();
+});
+
+test("date request explains missing required details", async ({ page }) => {
+  await page.goto(baseURL);
+  await page.locator("#availability-form button").click();
+  await expect(page.locator("#availability-message")).toContainText("Add a valid date");
 });
 
 test("mobile blog layouts do not overflow or float the editorial note", async ({ page }) => {

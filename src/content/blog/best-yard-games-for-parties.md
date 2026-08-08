@@ -93,4 +93,4 @@ Buying can make sense when you want one game for repeated family use. Renting ma
 
 A full-service rental should spell out what is included: delivery area, setup, pickup, rental window, surface requirements, and any damage terms. Popstar packages include delivery, styled setup, instructions, and pickup, so hosts do not spend the morning hauling giant pieces across town.
 
-Ready to choose a mix? See our [premium lawn game rental packages](/#packages) or [check your event date](/#availability).
+Ready to choose a mix? See our [premium lawn game rental packages](/#packages) or [request your event date](/#availability).

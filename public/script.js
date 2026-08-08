@@ -45,6 +45,18 @@ today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
 eventDate.min = today.toISOString().split("T")[0];
 query("#year").textContent = String(new Date().getFullYear());
 
+/**
+ * @param {string} value
+ */
+function formatEventDate(value) {
+  return new Intl.DateTimeFormat("en-US", {
+    month: "long",
+    day: "numeric",
+    year: "numeric",
+    timeZone: "UTC",
+  }).format(new Date(`${value}T00:00:00Z`));
+}
+
 eventZip.addEventListener("input", () => {
   eventZip.value = eventZip.value.replace(/\D/g, "").slice(0, 5);
 });
@@ -58,14 +70,9 @@ availabilityForm.addEventListener("submit", (event) => {
     return;
   }
 
-  const formattedDate = new Intl.DateTimeFormat("en-US", {
-    month: "long",
-    day: "numeric",
-    year: "numeric",
-    timeZone: "UTC",
-  }).format(new Date(`${eventDate.value}T00:00:00Z`));
+  const formattedDate = formatEventDate(eventDate.value);
 
-  availabilityMessage.textContent = `Great news—we’re building options for ${formattedDate} in ${eventZip.value}. Choose a package below.`;
+  availabilityMessage.textContent = `Next, choose a rental set. We’ll personally confirm ${formattedDate} in ${eventZip.value} before you pay anything.`;
   query("#packages").scrollIntoView({ behavior: "smooth", block: "start" });
 });
 
@@ -78,7 +85,7 @@ function openBookingDialog(packageName, price) {
   dialogTitle.textContent = `${packageName} looks good on you.`;
 
   const eventDetails = eventDate.value
-    ? ` for your ${eventType.value || "event"} on ${eventDate.value}`
+    ? ` for your ${eventType.value || "event"} on ${formatEventDate(eventDate.value)}`
     : "";
 
   dialogSummary.textContent = `Starting at ${price}${eventDetails}. Tell us where to send availability and a complete quote.`;
