@@ -138,6 +138,13 @@ bookingForm.addEventListener("submit", async (event) => {
 
       dialogMessage.textContent = `Thanks, ${firstName}. Your request is in—we’ll follow up with availability and a complete quote.`;
       bookingSubmit.textContent = "Request sent";
+      const analytics = /** @type {{ gtag?: (...args: unknown[]) => void }} */ (window);
+      if (typeof analytics.gtag === "function") {
+        analytics.gtag("event", "generate_lead", {
+          form_name: "booking-inquiry",
+          package_name: String(payload.package),
+        });
+      }
       bookingForm.reset();
       return;
     }

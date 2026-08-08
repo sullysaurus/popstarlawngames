@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 
 interface Props {
   title: string;
@@ -28,6 +29,7 @@ const socialImage = Astro.site ? new URL(image, Astro.site) : image;
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <GoogleAnalytics />
     <title>{title}</title>
     <meta name="description" content={description} />
     <link rel="icon" type="image/png" href="/assets/popstar-mark.png" />

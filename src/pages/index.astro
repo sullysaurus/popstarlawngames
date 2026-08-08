@@ -1,5 +1,6 @@
 ---
 import "../styles/global.css";
+import GoogleAnalytics from "../components/GoogleAnalytics.astro";
 
 const bookingEndpoint = import.meta.env.PUBLIC_BOOKING_FORM_ENDPOINT ?? (import.meta.env.PROD ? "/" : "");
 const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawngames.com";
@@ -10,6 +11,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <GoogleAnalytics />
     <meta
       name="description"
       content="Premium lawn game rentals delivered, styled, and picked up for weddings, company events, and parties across Raleigh and the Triangle."
