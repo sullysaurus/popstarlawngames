@@ -25,6 +25,12 @@ const bookingDialog = query("#booking-dialog");
 const bookingForm = query("#booking-form");
 /** @type {HTMLInputElement} */
 const selectedPackage = query("#selected-package");
+/** @type {HTMLInputElement} */
+const selectedEventDate = query("#selected-event-date");
+/** @type {HTMLInputElement} */
+const selectedEventZip = query("#selected-event-zip");
+/** @type {HTMLInputElement} */
+const selectedEventType = query("#selected-event-type");
 /** @type {HTMLHeadingElement} */
 const dialogTitle = query("#dialog-title");
 /** @type {HTMLParagraphElement} */
@@ -32,7 +38,7 @@ const dialogSummary = query("#dialog-summary");
 /** @type {HTMLParagraphElement} */
 const dialogMessage = query("#dialog-message");
 /** @type {HTMLButtonElement} */
-const bookingSubmit = query("#booking-form button[type='submit']");
+const bookingSubmit = query("#booking-submit");
 
 const today = new Date();
 today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
@@ -79,6 +85,9 @@ function openBookingDialog(packageName, price) {
   dialogMessage.textContent = "No payment required yet.";
   bookingForm.reset();
   selectedPackage.value = packageName;
+  selectedEventDate.value = eventDate.value;
+  selectedEventZip.value = eventZip.value;
+  selectedEventType.value = eventType.value;
   bookingDialog.showModal();
 }
 
@@ -95,7 +104,7 @@ bookingDialog.addEventListener("click", (event) => {
   if (event.target === bookingDialog) bookingDialog.close();
 });
 
-bookingForm.addEventListener("submit", (event) => {
+bookingForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   if (!bookingForm.checkValidity()) {
     bookingForm.reportValidity();
@@ -103,12 +112,64 @@ bookingForm.addEventListener("submit", (event) => {
   }
 
   const formData = new FormData(bookingForm);
-  const firstName = String(formData.get("name")).trim().split(" ")[0];
-  dialogMessage.textContent = `Thanks, ${firstName}! This prototype is ready to connect to your booking system.`;
+  const payload = Object.fromEntries(formData.entries());
+  const firstName = String(payload.name).trim().split(" ")[0];
+  const endpoint = bookingForm.dataset.endpoint?.trim();
+  const bookingEmail = bookingForm.dataset.email?.trim();
+
   bookingSubmit.disabled = true;
-  setTimeout(() => {
+  bookingSubmit.textContent = "Sending…";
+  dialogMessage.textContent = "Sending your request…";
+
+  try {
+    if (endpoint) {
+      const isNetlifyForm = endpoint === "/";
+      const response = await fetch(endpoint, {
+        method: "POST",
+        headers: isNetlifyForm
+          ? { "Content-Type": "application/x-www-form-urlencoded" }
+          : { "Content-Type": "application/json", Accept: "application/json" },
+        body: isNetlifyForm
+          ? new URLSearchParams(Object.entries(payload).map(([key, value]) => [key, String(value)])).toString()
+          : JSON.stringify(payload),
+      });
+
+      if (!response.ok) throw new Error(`Form endpoint returned ${response.status}`);
+
+      dialogMessage.textContent = `Thanks, ${firstName}. Your request is in—we’ll follow up with availability and a complete quote.`;
+      bookingSubmit.textContent = "Request sent";
+      bookingForm.reset();
+      return;
+    }
+
+    if (!bookingEmail) throw new Error("No booking email is configured");
+
+    const subject = encodeURIComponent(`Lawn game inquiry: ${String(payload.package)}`);
+    const body = encodeURIComponent([
+      `Name: ${String(payload.name)}`,
+      `Email: ${String(payload.email)}`,
+      `Phone: ${String(payload.phone || "Not provided")}`,
+      `Package: ${String(payload.package)}`,
+      `Event date: ${String(payload.eventDate || "Not selected")}`,
+      `Delivery ZIP: ${String(payload.deliveryZip || "Not provided")}`,
+      `Event type: ${String(payload.eventType || "Not selected")}`,
+      "",
+      "Please send availability and a complete quote.",
+    ].join("\n"));
+
+    dialogMessage.textContent = `Thanks, ${firstName}. Your email app is opening with the request ready to send.`;
+    bookingSubmit.textContent = "Opening email…";
+    window.location.href = `mailto:${bookingEmail}?subject=${subject}&body=${body}`;
+  } catch (error) {
+    console.error("Booking submission failed", error);
+    dialogMessage.textContent = `We couldn’t send that request. Email ${bookingEmail || "our booking team"} directly and we’ll take care of it.`;
+    bookingSubmit.textContent = "Try again";
+  } finally {
     bookingSubmit.disabled = false;
-  }, 1200);
+    if (bookingSubmit.textContent === "Opening email…") {
+      setTimeout(() => { bookingSubmit.textContent = "Request this package"; }, 1200);
+    }
+  }
 });
 
 const cardObserver = new IntersectionObserver(

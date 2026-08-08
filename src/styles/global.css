@@ -283,6 +283,7 @@ footer > p { max-width: 460px; margin: 0; }
 .booking-dialog form label:first-of-type { grid-column: 1 / -1; }
 .booking-dialog form .button, .dialog-note { grid-column: 1 / -1; }
 .dialog-note { margin: 0; font-size: .82rem; font-weight: 700; text-align: center; }
+.form-honeypot { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); margin: -1px; padding: 0; border: 0; }
 .dialog-close { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 40px; height: 40px; border: var(--border); border-radius: 50%; background: var(--paper); font-size: 1.5rem; cursor: pointer; }
 
 .reveal { animation: rise .75s cubic-bezier(.2,.8,.2,1) both; }
@@ -320,44 +321,77 @@ footer > p { max-width: 460px; margin: 0; }
 }
 
 @media (max-width: 680px) {
-  .announcement { justify-content: space-between; gap: .7rem; font-size: .62rem; }
-  .site-header { padding: .8rem 4vw; }
-  .site-header > .button { display: none; }
-  .brand-mark { width: 38px; }
+  body { font-size: 15px; }
+  .announcement { justify-content: space-between; gap: .7rem; min-height: 32px; font-size: .6rem; }
+  .site-header { gap: .65rem; padding: .65rem 4vw; }
+  .site-header > .button { display: inline-flex; min-height: 42px; padding: .55rem .8rem; font-size: .72rem; }
+  .brand { gap: .45rem; font-size: .7rem; }
+  .brand-mark { width: 40px; }
   .hero { min-height: 0; }
-  .hero-copy { padding: 4rem 5vw 3rem; }
-  .hero h1 { font-size: clamp(4rem, 20vw, 6.4rem); }
+  .hero-copy { padding: 3.5rem 5vw 2.75rem; }
+  .hero h1 { max-width: 9ch; font-size: clamp(3.7rem, 18vw, 5.2rem); line-height: .84; }
+  .hero-deck { margin-block: 1.5rem; }
   .hero-actions { align-items: flex-start; flex-direction: column; }
-  .proof-row { margin-top: 2.5rem; }
-  .hero-stage { min-height: 500px; }
+  .proof-row { gap: .55rem 1rem; margin-top: 2rem; }
+  .hero-stage { min-height: 420px; }
   .game-connect { left: 5%; grid-template-columns: repeat(4, 32px); gap: 8px; padding: 18px; }
   .game-connect span { width: 32px; }
   .game-jenga { right: -2%; transform: scale(.8) rotate(6deg); transform-origin: bottom right; }
   .cornhole { width: 210px; height: 300px; right: 3%; }
   .hero-sticker { width: 110px; font-size: 1.05rem; }
-  .availability-wrap { padding: 3rem 5vw; }
+  .availability-wrap { gap: 1.5rem; padding: 2.5rem 5vw; }
   .availability-form { grid-template-columns: 1fr; }
   .availability-form .button { width: 100%; }
+  input, select { min-height: 54px; font-size: 16px; }
   .section { padding-inline: 5vw; }
   .section-heading { align-items: start; flex-direction: column; }
   .package-card { display: flex; }
-  .package-art { min-height: 260px; border-right: 0; border-bottom: var(--border); }
+  .package-art { min-height: 235px; border-right: 0; border-bottom: var(--border); }
+  .package-content > p:not(.package-kicker) { min-height: 0; }
+  .package-footer strong { font-size: 2.5rem; }
   .occasion-list article { grid-template-columns: 40px 1fr; gap: 1rem; }
   .occasion-list article p { grid-column: 2; }
   .coming-card { min-height: 360px; padding: 2rem; }
-  .journal-feature { grid-template-columns: 1fr; }
-  .journal-feature img { min-height: 280px; border-right: 0; border-bottom: var(--border); }
+  .journal-feature { grid-template-columns: 1fr; box-shadow: 4px 4px 0 var(--ink); }
+  .journal-feature img { min-height: 230px; border-right: 0; border-bottom: var(--border); }
+  .journal-feature div { padding: 1.4rem; }
+  .journal-feature h3 { font-size: 2.35rem; }
+  .journal-links h3 { font-size: 1.6rem; }
   .article-grid, .blog-method { grid-template-columns: 1fr; }
-  .post-hero-copy { min-height: auto; }
-  .post-hero-image { min-height: 380px; }
+  .blog-hero-copy { padding: 3.5rem 5vw; }
+  .blog-hero h1 { font-size: clamp(3.4rem, 17vw, 4.7rem); }
+  .blog-hero-art { display: flex; flex-direction: column; min-height: 0; }
+  .blog-hero-art img { aspect-ratio: 4 / 3; height: auto; }
+  .blog-hero-note { position: static; width: auto; margin: 0; padding: 1rem 5vw; border: 0; border-top: var(--border); box-shadow: none; font-size: 1.15rem; text-align: center; transform: none; }
+  .article-card { box-shadow: 4px 4px 0 var(--ink); }
+  .article-card img { aspect-ratio: 16 / 9; }
+  .article-card-content { padding: 1.25rem; }
+  .article-card h2 { font-size: 2.25rem; }
+  .blog-method { gap: 1.8rem; }
+  .post-hero-copy { min-height: auto; padding: 3.5rem 5vw 3rem; }
+  .post-hero h1 { font-size: clamp(3.25rem, 16vw, 4.5rem); }
+  .post-deck { margin-block: 1.4rem; }
+  .post-hero-image { min-height: 0; }
+  .post-hero-image img { display: block; aspect-ratio: 4 / 3; height: auto; }
+  .post-shell { gap: 2rem; padding: 2.5rem 5vw 4rem; }
+  .post-aside { padding: 1rem; box-shadow: 3px 3px 0 var(--ink); }
+  .post-aside p { display: inline; margin-right: .35rem; font-size: 1.05rem; }
+  .post-content { font-size: 1rem; line-height: 1.7; }
+  .post-content > p:first-child { font-size: 1.13rem; }
+  .post-content h2 { margin-top: 3rem; font-size: 2.45rem; }
+  .post-content h3 { font-size: 1.65rem; }
+  .post-content blockquote { margin-inline: 0; padding: 1.25rem; box-shadow: 4px 4px 0 var(--ink); font-size: 1.35rem; }
+  .post-cta { padding: 1.25rem; }
   .process-grid { grid-template-columns: 1fr; }
   .process-grid li { min-height: 250px; border-right: 0; border-bottom: var(--border); }
   .process-grid li:last-child { border-bottom: 0; }
   .process-grid h3 { margin-top: 2.5rem; }
   .cta-star { font-size: 5rem; top: 5%; }
   footer { grid-template-columns: 1fr; }
-  .booking-dialog { padding: 2.5rem 1.25rem 1.5rem; }
+  .booking-dialog { width: calc(100% - 1rem); max-height: calc(100dvh - 1rem); overflow-y: auto; padding: 2.75rem 1.1rem 1.25rem; box-shadow: 5px 5px 0 var(--ink); }
+  .booking-dialog h2 { font-size: 3rem; }
   .booking-dialog form { grid-template-columns: 1fr; }
   .booking-dialog form label, .booking-dialog form label:first-of-type { grid-column: auto; }
   .booking-dialog form .button, .dialog-note { grid-column: auto; }
+  .dialog-close { top: .65rem; right: .65rem; }
 }

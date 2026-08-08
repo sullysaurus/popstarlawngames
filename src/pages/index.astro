@@ -1,5 +1,8 @@
 ---
 import "../styles/global.css";
+
+const bookingEndpoint = import.meta.env.PUBLIC_BOOKING_FORM_ENDPOINT ?? (import.meta.env.PROD ? "/" : "");
+const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawngames.com";
 ---
 
 <!doctype html>
@@ -292,12 +295,27 @@ import "../styles/global.css";
       <p class="eyebrow">Excellent choice</p>
       <h2 id="dialog-title">Let’s hold your date.</h2>
       <p id="dialog-summary">Tell us where to send the details.</p>
-      <form id="booking-form">
+      <form
+        id="booking-form"
+        name="booking-inquiry"
+        method="POST"
+        data-netlify="true"
+        data-netlify-honeypot="bot-field"
+        data-endpoint={bookingEndpoint}
+        data-email={bookingEmail}
+      >
+        <input type="hidden" name="form-name" value="booking-inquiry" />
+        <p class="form-honeypot" aria-hidden="true">
+          <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+        </p>
         <input type="hidden" id="selected-package" name="package" />
+        <input type="hidden" id="selected-event-date" name="eventDate" />
+        <input type="hidden" id="selected-event-zip" name="deliveryZip" />
+        <input type="hidden" id="selected-event-type" name="eventType" />
         <label><span>Your name</span><input type="text" name="name" autocomplete="name" required /></label>
         <label><span>Email</span><input type="email" name="email" autocomplete="email" required /></label>
         <label><span>Phone</span><input type="tel" name="phone" autocomplete="tel" /></label>
-        <button class="button button-accent" type="submit">Request this package</button>
+        <button class="button button-accent" id="booking-submit" type="submit">Request this package</button>
         <p class="dialog-note" id="dialog-message" aria-live="polite">No payment required yet.</p>
       </form>
     </dialog>

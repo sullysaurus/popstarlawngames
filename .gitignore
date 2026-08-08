@@ -3,3 +3,8 @@ dist/
 .astro/
 .venv/
 .DS_Store
+
+# Local Netlify folder
+.netlify
+test-results/
+playwright-report/
