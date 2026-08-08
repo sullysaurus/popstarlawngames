@@ -5,8 +5,8 @@ publishedDate: 2026-08-06
 category: "Company events"
 targetKeyword: "corporate event lawn games"
 featured: true
-image: "/assets/field-day-reference.jpg"
-imageAlt: "A colorful outdoor field day setup with lawn games for company teams"
+image: "/assets/headliner-reference.jpg"
+imageAlt: "Guests in colorful event attire enjoying a styled outdoor lawn game setup"
 readingTime: "8 minute read"
 ---
 
@@ -30,7 +30,7 @@ Teams earn points across several stations, but the schedule stays flexible. This
 
 A host explains the format, starts rotations, tracks scores, and keeps the energy moving. This is the right choice when games are a main item on the agenda or when the planner cannot manage the activity while handling the rest of the event.
 
-Hosted events cost more because they include planning and labor in addition to equipment. Our Field Day package starts at $1,495 for 8–12 stations, up to 100 guests, and a two-hour hosted tournament. Larger groups, longer programs, and multi-host formats receive a custom scope.
+Hosted events cost more because they include planning and labor in addition to equipment. Popstar's hosted company tournaments and field days are custom event productions starting at $2,500. The scope can include game stations, staffing, tournament planning, scoring, and a run of show based on the group and venue.
 
 ## Pick inclusive games
 
@@ -91,6 +91,6 @@ Providing those details makes a quote more accurate and reduces expensive surpri
 
 The best closing moment is short. Announce the winning team, share one or two playful awards, take the group photo, and move on while the energy is high. Avoid a long scoring audit or a prize structure that makes a casual event suddenly feel high-stakes.
 
-For a smaller company happy hour, a self-directed five-game setup may be enough. Compare the Celebration Set and hosted Field Day on our [rental packages](/#packages). If you are still choosing individual games, start with our guide to [yard games guests actually play](/blog/best-yard-games-for-parties/).
+For most company happy hours and picnics, a self-directed Celebration Set or Headliner setup is enough. [Compare the event-day rental sets](/#packages). If you are still choosing individual games, start with our guide to [yard games guests actually play](/blog/best-yard-games-for-parties/).
 
-Planning a company event in the Triangle? [Tell us the date, location, and guest count](/#availability), and we will recommend open play or a hosted format.
+Planning a company event in the Triangle? [Tell us the date, location, and guest count](/#availability), and we will recommend an event-day rental or quote a hosted production when the program truly needs one.
