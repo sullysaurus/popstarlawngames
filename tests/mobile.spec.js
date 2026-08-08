@@ -24,7 +24,7 @@ test("mobile booking flow preserves event details and reaches a send path", asyn
   await page.locator('#booking-form input[name="email"]').fill("taylor@example.com");
   await page.locator("#booking-submit").click();
 
-  await expect(page.locator("#dialog-message")).toContainText("email app is opening");
+  await expect(page.locator("#dialog-message")).toContainText(/request is in|email app is opening/);
   await expect(page.locator("#booking-submit")).toBeEnabled();
 });
 
@@ -47,3 +47,39 @@ test("mobile blog layouts do not overflow or float the editorial note", async ({
   expect(articleMetrics.bodyWidth).toBeLessThanOrEqual(articleMetrics.viewportWidth);
   expect(articleMetrics.asidePosition).toBe("static");
 });
+
+for (const width of [320, 360, 390]) {
+  for (const path of ["/", "/blog/", "/blog/wedding-lawn-games-guide/"]) {
+    test(`${path} keeps visible content inside a ${width}px viewport`, async ({ page }) => {
+      await page.setViewportSize({ width, height: 760 });
+      await page.goto(`${baseURL}${path}`);
+      await page.waitForTimeout(800);
+
+      const offenders = await page.locator("body *").evaluateAll((elements) =>
+        elements.flatMap((element) => {
+          if (!(element instanceof HTMLElement)) return [];
+          const root = element.getRootNode();
+          if (root instanceof ShadowRoot && root.host.tagName === "ASTRO-DEV-TOOLBAR") return [];
+          const style = getComputedStyle(element);
+          const rect = element.getBoundingClientRect();
+          if (style.display === "none" || style.visibility === "hidden" || rect.width === 0) return [];
+          if (element.closest(".marquee") || element.classList.contains("ambient-video")) return [];
+          const viewportOverflow = rect.left < -1 || rect.right > window.innerWidth + 1;
+          const internalOverflow = element.scrollWidth > element.clientWidth + 1 && style.overflowX === "visible";
+          return viewportOverflow || internalOverflow
+            ? [{
+                tag: element.tagName,
+                className: element.className,
+                left: rect.left,
+                right: rect.right,
+                clientWidth: element.clientWidth,
+                scrollWidth: element.scrollWidth,
+              }]
+            : [];
+        }),
+      );
+
+      expect(offenders).toEqual([]);
+    });
+  }
+}

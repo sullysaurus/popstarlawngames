@@ -346,6 +346,7 @@ footer > p { max-width: 460px; margin: 0; }
   .section { padding-inline: 5vw; }
   .section-heading { align-items: start; flex-direction: column; }
   .package-card { display: flex; }
+  .popular-tag { right: .75rem; top: .75rem; transform: none; }
   .package-art { min-height: 235px; border-right: 0; border-bottom: var(--border); }
   .package-content > p:not(.package-kicker) { min-height: 0; }
   .package-footer strong { font-size: 2.5rem; }
