@@ -1,0 +1,59 @@
+---
+import { getCollection } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+
+const posts = (await getCollection("blog")).sort(
+  (a, b) => b.data.publishedDate.valueOf() - a.data.publishedDate.valueOf(),
+);
+
+const formatDate = (date: Date) =>
+  date.toLocaleDateString("en-US", { month: "short", day: "numeric", year: "numeric" });
+---
+
+<BaseLayout
+  title="Lawn Game Ideas & Event Planning | Popstar Lawn Games"
+  description="Practical lawn game ideas and planning guides for Raleigh weddings, corporate events, and parties from Popstar Lawn Games."
+>
+  <SiteHeader />
+  <main>
+    <section class="blog-hero">
+      <div class="blog-hero-copy">
+        <p class="eyebrow">The Popstar Playbook</p>
+        <h1>Better parties start <em>before</em> game day.</h1>
+        <p>Helpful, honest guides for choosing games, using your space, and giving guests something better to do than hover near the bar.</p>
+      </div>
+      <div class="blog-hero-art">
+        <img src="/assets/celebration-set-reference.jpg" alt="Colorful premium lawn games set up for a stylish outdoor celebration" width="1454" height="1091" />
+        <div class="blog-hero-note">Ideas worth taking outside.</div>
+      </div>
+    </section>
+
+    <section class="section" aria-labelledby="latest-guides">
+      <div class="section-heading">
+        <div><p class="eyebrow">Fresh from the field</p><h2 id="latest-guides">Planning guides</h2></div>
+        <p>Built for actual hosts: clear recommendations, realistic space plans, and no endless list of things to buy.</p>
+      </div>
+      <div class="article-grid">
+        {posts.map((post) => (
+          <a class="article-card" href={`/blog/${post.id}/`}>
+            <img src={post.data.image} alt={post.data.imageAlt} width="1454" height="1091" loading="lazy" />
+            <div class="article-card-content">
+              <div class="article-card-meta"><span>{post.data.category}</span><time datetime={post.data.publishedDate.toISOString()}>{formatDate(post.data.publishedDate)}</time></div>
+              <h2>{post.data.title}</h2>
+              <p>{post.data.description}</p>
+              <strong>Read the guide <span aria-hidden="true">↗</span></strong>
+            </div>
+          </a>
+        ))}
+      </div>
+    </section>
+
+    <section class="blog-method section">
+      <div><p class="eyebrow">Our point of view</p><h2>Play should feel easy.</h2></div>
+      <div><p>The best event games are simple to understand, quick to join, and good-looking enough to belong in the room. Our guides favor flexible crowd-pleasers over novelty for novelty’s sake.</p><a class="button button-dark" href="/#packages">See the rental sets</a></div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>

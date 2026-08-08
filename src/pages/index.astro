@@ -1,0 +1,305 @@
+---
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="description"
+      content="Premium lawn game rentals delivered, styled, and picked up for weddings, company events, and parties across Raleigh and the Triangle."
+    />
+    <title>Premium Lawn Game Rentals in Raleigh | Popstar Lawn Games</title>
+    <link rel="icon" type="image/png" href="/assets/popstar-mark.png" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Fraunces:opsz,wght@9..144,700;9..144,900&display=swap"
+      rel="stylesheet"
+    />
+    <script is:inline src="/script.js" defer></script>
+  </head>
+  <body>
+    <div class="announcement">
+      <p>Now booking the Triangle</p>
+      <a href="#availability">Check your date <span aria-hidden="true">↗</span></a>
+    </div>
+
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Popstar Lawn Games home">
+        <span class="brand-mark" aria-hidden="true"><img src="/assets/popstar-mark.png" alt="" /></span>
+        <span>Popstar<br />Lawn Games</span>
+      </a>
+      <nav aria-label="Primary navigation">
+        <a href="#packages">Rentals</a>
+        <a href="#occasions">Occasions</a>
+        <a href="#how-it-works">How it works</a>
+        <a href="/blog/">Playbook</a>
+      </nav>
+      <a class="button button-small button-dark" href="#availability">Check your date</a>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div class="hero-copy reveal">
+          <p class="eyebrow">Premium lawn game rentals · Raleigh &amp; the Triangle</p>
+          <h1>Make room for a <em>really</em> good time.</h1>
+          <p class="hero-deck">
+            Design-forward lawn games that arrive ready to play—so your guests
+            mingle, laugh, and stay a little longer.
+          </p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#availability">Build your party</a>
+            <a class="text-link" href="#packages">See the rentals <span aria-hidden="true">↓</span></a>
+          </div>
+          <div class="proof-row" aria-label="Service benefits">
+            <span>★★★★★ 5-star service</span>
+            <span>Delivery + setup</span>
+            <span>Fully insured</span>
+          </div>
+        </div>
+
+        <div class="hero-stage photo-stage reveal reveal-delay" aria-label="Guests enjoying premium lawn games at an outdoor wedding">
+          <video class="ambient-video" autoplay muted loop playsinline aria-hidden="true">
+            <source data-src="assets/hero-party-loop.mp4" type="video/mp4" />
+          </video>
+          <img class="hero-photo" src="/assets/hero-party-reference.jpg" alt="Wedding guests playing cornhole, a giant tumbling tower and four-in-a-row on an estate lawn" width="1586" height="992" fetchpriority="high" />
+          <div class="hero-sticker" aria-hidden="true">Play<br />outside<br />the box!</div>
+          <div class="spark spark-one" aria-hidden="true">✦</div>
+          <div class="spark spark-two" aria-hidden="true">✦</div>
+        </div>
+      </section>
+
+      <section class="availability-wrap" id="availability">
+        <div class="availability-intro">
+          <p class="eyebrow">Party planning, minus the back-and-forth</p>
+          <h2>First, let’s see what’s free.</h2>
+        </div>
+        <form class="availability-form" id="availability-form" novalidate>
+          <label>
+            <span>Event date</span>
+            <input type="date" id="event-date" name="event-date" required />
+          </label>
+          <label>
+            <span>Delivery ZIP</span>
+            <input
+              type="text"
+              id="event-zip"
+              name="event-zip"
+              inputmode="numeric"
+              autocomplete="postal-code"
+              placeholder="27601"
+              pattern="[0-9]{5}"
+              maxlength="5"
+              required
+            />
+          </label>
+          <label>
+            <span>Event type</span>
+            <select id="event-type" name="event-type" required>
+              <option value="">Choose one</option>
+              <option>Wedding</option>
+              <option>Corporate event</option>
+              <option>School or university</option>
+              <option>Birthday or private party</option>
+              <option>Community event</option>
+              <option>Something else</option>
+            </select>
+          </label>
+          <button class="button button-accent" type="submit">Show available rentals</button>
+          <p class="form-message" id="availability-message" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="packages section" id="packages">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">The opening lineup</p>
+            <h2>Pick your kind of fun.</h2>
+          </div>
+          <p>
+            Every package includes delivery, a polished setup, simple instructions, and pickup
+            after the party.
+          </p>
+        </div>
+
+        <div class="package-grid">
+          <article class="package-card package-yellow reveal-card">
+            <div class="package-number">01</div>
+            <div class="package-art art-social" aria-hidden="true">
+              <video class="ambient-video" autoplay muted loop playsinline>
+                <source data-src="assets/social-set-loop.mp4" type="video/mp4" />
+              </video>
+              <img class="package-photo" src="/assets/social-set-reference.jpg" alt="" width="1454" height="1091" loading="lazy" />
+            </div>
+            <div class="package-content">
+              <p class="package-kicker">The easy crowd-pleaser</p>
+              <h3>The Social Set</h3>
+              <p>Cornhole, giant tower and four-in-a-row. Three classics, zero awkward mingling.</p>
+              <ul>
+                <li>Cornhole, giant tower + four-in-a-row</li>
+                <li>Up to 75 guests</li>
+                <li>Delivery, styled setup + pickup</li>
+              </ul>
+              <div class="package-footer">
+                <p><small>From</small><strong>$299</strong></p>
+                <button class="circle-button package-select" data-package="The Social Set" data-price="$299">
+                  <span class="sr-only">Select The Social Set</span>↗
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="package-card package-coral reveal-card">
+            <div class="popular-tag">Most popular</div>
+            <div class="package-number">02</div>
+            <div class="package-art art-celebration" aria-hidden="true">
+              <video class="ambient-video" autoplay muted loop playsinline>
+                <source data-src="assets/celebration-set-loop.mp4" type="video/mp4" />
+              </video>
+              <img class="package-photo" src="/assets/celebration-set-reference.jpg" alt="" width="1454" height="1091" loading="lazy" />
+            </div>
+            <div class="package-content">
+              <p class="package-kicker">More games, more staying power</p>
+              <h3>The Celebration Set</h3>
+              <p>A styled five-game lounge built for cocktail hours, company parties and big backyards.</p>
+              <ul>
+                <li>5 premium games of your choice</li>
+                <li>Up to 150 guests</li>
+                <li>Custom sign, delivery + styled setup</li>
+              </ul>
+              <div class="package-footer">
+                <p><small>From</small><strong>$449</strong></p>
+                <button class="circle-button package-select" data-package="The Celebration Set" data-price="$449">
+                  <span class="sr-only">Select The Celebration Set</span>↗
+                </button>
+              </div>
+            </div>
+          </article>
+
+          <article class="package-card package-blue reveal-card">
+            <div class="package-number">03</div>
+            <div class="package-art art-field" aria-hidden="true">
+              <video class="ambient-video" autoplay muted loop playsinline>
+                <source data-src="assets/field-day-loop.mp4" type="video/mp4" />
+              </video>
+              <img class="package-photo" src="/assets/field-day-reference.jpg" alt="" width="1454" height="1091" loading="lazy" />
+            </div>
+            <div class="package-content">
+              <p class="package-kicker">Hosted competition, handled</p>
+              <h3>The Field Day</h3>
+              <p>Teams, brackets, a cheerful host and enough games to turn coworkers into rivals.</p>
+              <ul>
+                <li>8–12 games · up to 100 guests</li>
+                <li>2-hour hosted tournament</li>
+                <li>Custom team signage + branding</li>
+              </ul>
+              <div class="package-footer">
+                <p><small>From</small><strong>$1,495</strong></p>
+                <button class="circle-button package-select" data-package="The Field Day" data-price="$1,495">
+                  <span class="sr-only">Select The Field Day</span>↗
+                </button>
+              </div>
+            </div>
+          </article>
+        </div>
+      </section>
+
+      <section class="marquee" aria-label="Available games">
+        <div>
+          <span>Cornhole</span><i>✦</i><span>Giant Tower</span><i>✦</i><span>Four-in-a-Row</span><i>✦</i>
+          <span>Putterball</span><i>✦</i><span>Ring Toss</span><i>✦</i><span>Yard Dice</span><i>✦</i>
+        </div>
+      </section>
+
+      <section class="occasions section" id="occasions">
+        <div class="occasion-copy">
+          <p class="eyebrow">Good at almost everything</p>
+          <h2>One rental.<br /><em>Instant chemistry.</em></h2>
+          <p>
+            Games give guests something to do with their hands and a reason to meet. That makes
+            them just as useful at a polished brand activation as a backyard birthday.
+          </p>
+          <a class="button button-dark" href="#availability">Plan your setup</a>
+        </div>
+        <div class="occasion-list">
+          <article><span>01</span><h3>Weddings</h3><p>Cocktail hours that actually mix.</p></article>
+          <article><span>02</span><h3>Company parties</h3><p>Team building without the trust falls.</p></article>
+          <article><span>03</span><h3>Schools &amp; universities</h3><p>Big energy for students of every age.</p></article>
+          <article><span>04</span><h3>Backyard celebrations</h3><p>Your lawn’s greatest performance yet.</p></article>
+        </div>
+      </section>
+
+      <section class="process section" id="how-it-works">
+        <div class="section-heading">
+          <div><p class="eyebrow">Easy does it</p><h2>We bring the play.</h2></div>
+          <p>You bring the people. Everything else happens in three refreshingly simple steps.</p>
+        </div>
+        <ol class="process-grid">
+          <li><span>1</span><h3>Choose your set</h3><p>Start with a package, then add games or custom details.</p></li>
+          <li><span>2</span><h3>Save your date</h3><p>Approve your tailored proposal, sign online and place a 30% deposit.</p></li>
+          <li><span>3</span><h3>Go have fun</h3><p>We deliver, style the setup and return after the event.</p></li>
+        </ol>
+      </section>
+
+      <section class="journal-preview section" aria-labelledby="journal-title">
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">The Popstar Playbook</p>
+            <h2 id="journal-title">Plan a party people play in.</h2>
+          </div>
+          <p>Practical guides for choosing games, laying out your space, and keeping every kind of guest in the mix.</p>
+        </div>
+        <div class="journal-preview-grid">
+          <a class="journal-feature" href="/blog/best-yard-games-for-parties/">
+            <img src="/assets/social-set-reference.jpg" alt="Premium giant lawn games arranged for an outdoor party" width="1454" height="1091" loading="lazy" />
+            <div><span>Party planning</span><h3>11 yard games that guests actually want to play</h3><p>Match the right games to your crowd, space, and event style.</p></div>
+          </a>
+          <div class="journal-links">
+            <a href="/blog/wedding-lawn-games-guide/"><span>Weddings</span><h3>The complete guide to wedding lawn games</h3><b aria-hidden="true">↗</b></a>
+            <a href="/blog/corporate-event-lawn-games/"><span>Company events</span><h3>How to plan lawn games without forced fun</h3><b aria-hidden="true">↗</b></a>
+            <a class="button button-dark" href="/blog/">Read the Playbook</a>
+          </div>
+        </div>
+      </section>
+
+      <section class="final-cta">
+        <p class="eyebrow">Your date won’t plan itself</p>
+        <h2>Let’s make it a<br /><em>play date.</em></h2>
+        <a class="button button-accent" href="#availability">Check availability</a>
+        <div class="cta-star" aria-hidden="true">★</div>
+      </section>
+    </main>
+
+    <footer>
+      <a class="brand brand-footer" href="#top">
+        <span class="brand-mark" aria-hidden="true"><img src="/assets/popstar-mark.png" alt="" /></span>
+        <span>Popstar<br />Lawn Games</span>
+      </a>
+      <p>Curated event rentals for Raleigh, Durham, Chapel Hill and the surrounding Triangle.</p>
+      <div class="footer-links">
+        <a href="#availability">Concierge booking</a>
+        <a href="/blog/">The Playbook</a>
+        <a href="#availability">Book your event</a>
+      </div>
+      <p class="copyright">© <span id="year"></span> Popstar Lawn Games</p>
+    </footer>
+
+    <dialog class="booking-dialog" id="booking-dialog">
+      <button class="dialog-close" type="button" aria-label="Close booking form">×</button>
+      <p class="eyebrow">Excellent choice</p>
+      <h2 id="dialog-title">Let’s hold your date.</h2>
+      <p id="dialog-summary">Tell us where to send the details.</p>
+      <form id="booking-form">
+        <input type="hidden" id="selected-package" name="package" />
+        <label><span>Your name</span><input type="text" name="name" autocomplete="name" required /></label>
+        <label><span>Email</span><input type="email" name="email" autocomplete="email" required /></label>
+        <label><span>Phone</span><input type="tel" name="phone" autocomplete="tel" /></label>
+        <button class="button button-accent" type="submit">Request this package</button>
+        <p class="dialog-note" id="dialog-message" aria-live="polite">No payment required yet.</p>
+      </form>
+    </dialog>
+  </body>
+</html>

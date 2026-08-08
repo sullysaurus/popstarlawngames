@@ -1,0 +1,26 @@
+---
+interface Props {
+  compact?: boolean;
+}
+
+const { compact = false } = Astro.props;
+---
+
+{!compact && (
+  <div class="announcement">
+    <p>Now booking the Triangle</p>
+    <a href="/#availability">Check your date <span aria-hidden="true">↗</span></a>
+  </div>
+)}
+<header class="site-header">
+  <a class="brand" href="/" aria-label="Popstar Lawn Games home">
+    <span class="brand-mark" aria-hidden="true"><img src="/assets/popstar-mark.png" alt="" /></span>
+    <span>Popstar<br />Lawn Games</span>
+  </a>
+  <nav aria-label="Primary navigation">
+    <a href="/#packages">Rentals</a>
+    <a href="/#occasions">Occasions</a>
+    <a href="/blog/">Playbook</a>
+  </nav>
+  <a class="button button-small button-dark" href="/#availability">Check your date</a>
+</header>

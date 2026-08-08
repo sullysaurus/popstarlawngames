@@ -1,0 +1,67 @@
+---
+import { getCollection, render, type CollectionEntry } from "astro:content";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import SiteFooter from "../../components/SiteFooter.astro";
+
+export async function getStaticPaths() {
+  const posts = await getCollection("blog");
+  return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
+}
+
+interface Props { post: CollectionEntry<"blog">; }
+const { post } = Astro.props;
+const { Content } = await render(post);
+const allPosts = await getCollection("blog");
+const related = allPosts.filter((item) => item.id !== post.id).slice(0, 2);
+const formatDate = (date: Date) => date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
+
+const schema = {
+  "@context": "https://schema.org",
+  "@type": "BlogPosting",
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.publishedDate.toISOString(),
+  dateModified: (post.data.updatedDate ?? post.data.publishedDate).toISOString(),
+  author: { "@type": "Organization", name: "Popstar Lawn Games" },
+  publisher: { "@type": "Organization", name: "Popstar Lawn Games" },
+  image: post.data.image,
+};
+---
+
+<BaseLayout title={`${post.data.title} | Popstar Lawn Games`} description={post.data.description} image={post.data.image} type="article" publishedDate={post.data.publishedDate} updatedDate={post.data.updatedDate}>
+  <script is:inline type="application/ld+json" set:html={JSON.stringify(schema)} />
+  <SiteHeader />
+  <main>
+    <article>
+      <header class="post-hero">
+        <div class="post-hero-copy">
+          <p class="post-category">{post.data.category}</p>
+          <h1>{post.data.title}</h1>
+          <p class="post-deck">{post.data.description}</p>
+          <div class="post-meta"><time datetime={post.data.publishedDate.toISOString()}>{formatDate(post.data.publishedDate)}</time><span>{post.data.readingTime}</span><span>By Popstar Lawn Games</span></div>
+        </div>
+        <div class="post-hero-image"><img src={post.data.image} alt={post.data.imageAlt} width="1454" height="1091" /></div>
+      </header>
+
+      <div class="post-shell">
+        <aside class="post-aside"><p>Planning in the Triangle?</p><a href="/#availability">Check your event date →</a></aside>
+        <div class="post-content"><Content /></div>
+        <aside class="post-cta"><h2>Skip the equipment hunt.</h2><p>We deliver, style, and pick up premium lawn games across Raleigh, Durham, Chapel Hill, and nearby Triangle communities.</p><a class="button" href="/#packages">See packages</a></aside>
+      </div>
+    </article>
+
+    <section class="more-reading section">
+      <div class="section-heading"><div><p class="eyebrow">Keep planning</p><h2>More from the Playbook</h2></div><a class="button button-dark" href="/blog/">View every guide</a></div>
+      <div class="article-grid">
+        {related.map((item) => (
+          <a class="article-card" href={`/blog/${item.id}/`}>
+            <img src={item.data.image} alt={item.data.imageAlt} width="1454" height="1091" loading="lazy" />
+            <div class="article-card-content"><div class="article-card-meta"><span>{item.data.category}</span><span>{item.data.readingTime}</span></div><h2>{item.data.title}</h2><strong>Read the guide <span aria-hidden="true">↗</span></strong></div>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+  <SiteFooter />
+</BaseLayout>
