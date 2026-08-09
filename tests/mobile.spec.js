@@ -103,7 +103,7 @@ test("homepage Playbook feature keeps copy below its image on mobile", async ({ 
 });
 
 for (const width of [320, 360, 390]) {
-  for (const path of ["/", "/blog/", "/blog/wedding-lawn-games-guide/"]) {
+  for (const path of ["/", "/blog/", "/blog/wedding-lawn-games-guide/", "/dangerous-lawn-games/"]) {
     test(`${path} keeps visible content inside a ${width}px viewport`, async ({ page }) => {
       await page.setViewportSize({ width, height: 760 });
       await page.goto(`${baseURL}${path}`);
@@ -117,7 +117,7 @@ for (const width of [320, 360, 390]) {
           const style = getComputedStyle(element);
           const rect = element.getBoundingClientRect();
           if (style.display === "none" || style.visibility === "hidden" || rect.width === 0) return [];
-          if (element.closest(".marquee") || element.classList.contains("ambient-video")) return [];
+          if (element.closest(".marquee, .danger-ticker, .hazard-rail") || element.classList.contains("ambient-video")) return [];
           const viewportOverflow = rect.left < -1 || rect.right > window.innerWidth + 1;
           const internalOverflow = element.scrollWidth > element.clientWidth + 1 && style.overflowX === "visible";
           return viewportOverflow || internalOverflow
