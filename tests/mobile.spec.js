@@ -9,7 +9,7 @@ test("mobile booking form sends the complete request in one step", async ({ page
   await page.goto(baseURL);
 
   await expect(page.locator(".site-header > .button")).toBeVisible();
-  await page.locator("#event-date").fill("2026-10-24");
+  await page.locator("#event-date").fill("10/24/2026");
   await page.locator("#event-zip").fill("27601");
   await page.locator("#event-type").selectOption({ label: "Wedding" });
   await page.locator("#event-package").selectOption("The Celebration Set");
@@ -35,7 +35,7 @@ test("date request explains missing required details", async ({ page }) => {
   await expect(page.locator("#availability-message")).toContainText("Complete the required fields");
 });
 
-test("native date control stays inside the mobile form", async ({ page }) => {
+test("event date field matches the other mobile inputs", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 760 });
   await page.goto(baseURL);
 
@@ -47,13 +47,20 @@ test("native date control stays inside the mobile form", async ({ page }) => {
       inputRight: inputRect.right,
       formLeft: formRect.left,
       formRight: formRect.right,
+      inputType: input.type,
       minWidth: getComputedStyle(input).minWidth,
+      labelOverflow: getComputedStyle(input.closest("label")).overflowX,
+      pageWidth: document.documentElement.scrollWidth,
+      viewportWidth: window.innerWidth,
     };
   });
 
   expect(bounds.inputLeft).toBeGreaterThanOrEqual(bounds.formLeft - 1);
   expect(bounds.inputRight).toBeLessThanOrEqual(bounds.formRight + 1);
+  expect(bounds.inputType).toBe("text");
   expect(bounds.minWidth).toBe("0px");
+  expect(bounds.labelOverflow).toBe("hidden");
+  expect(bounds.pageWidth).toBeLessThanOrEqual(bounds.viewportWidth);
 });
 
 test("mobile blog layouts do not overflow or float the editorial note", async ({ page }) => {

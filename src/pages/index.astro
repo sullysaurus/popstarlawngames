@@ -98,9 +98,18 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
           <p class="form-honeypot" aria-hidden="true">
             <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>
-          <label>
+          <label class="date-field">
             <span>Event date</span>
-            <input type="date" id="event-date" name="eventDate" required />
+            <input
+              type="text"
+              id="event-date"
+              name="eventDate"
+              inputmode="numeric"
+              autocomplete="off"
+              placeholder="MM/DD/YYYY"
+              maxlength="10"
+              required
+            />
           </label>
           <label>
             <span>Delivery ZIP</span>

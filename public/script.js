@@ -26,8 +26,36 @@ const bookingSubmit = query("#booking-submit");
 
 const today = new Date();
 today.setMinutes(today.getMinutes() - today.getTimezoneOffset());
-eventDate.min = today.toISOString().split("T")[0];
 query("#year").textContent = String(new Date().getFullYear());
+
+eventDate.addEventListener("input", () => {
+  const digits = eventDate.value.replace(/\D/g, "").slice(0, 8);
+  eventDate.value = [digits.slice(0, 2), digits.slice(2, 4), digits.slice(4, 8)]
+    .filter(Boolean)
+    .join("/");
+  eventDate.setCustomValidity("");
+});
+
+function validateEventDate() {
+  const match = eventDate.value.match(/^(\d{2})\/(\d{2})\/(\d{4})$/);
+  if (!match) {
+    eventDate.setCustomValidity("Enter the date as MM/DD/YYYY.");
+    return;
+  }
+
+  const [, month, day, year] = match;
+  const parsed = new Date(Number(year), Number(month) - 1, Number(day));
+  const isRealDate = parsed.getFullYear() === Number(year)
+    && parsed.getMonth() === Number(month) - 1
+    && parsed.getDate() === Number(day);
+  const startOfToday = new Date(today.getFullYear(), today.getMonth(), today.getDate());
+
+  eventDate.setCustomValidity(
+    !isRealDate || parsed < startOfToday ? "Enter a valid future event date." : "",
+  );
+}
+
+eventDate.addEventListener("blur", validateEventDate);
 
 eventZip.addEventListener("input", () => {
   eventZip.value = eventZip.value.replace(/\D/g, "").slice(0, 5);
@@ -45,6 +73,7 @@ packageButtons.forEach((button) => {
 
 availabilityForm.addEventListener("submit", async (event) => {
   event.preventDefault();
+  validateEventDate();
   if (!availabilityForm.checkValidity()) {
     availabilityMessage.textContent = "Complete the required fields so we can check your date.";
     availabilityForm.reportValidity();
