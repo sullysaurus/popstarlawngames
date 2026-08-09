@@ -83,6 +83,25 @@ test("mobile blog layouts do not overflow or float the editorial note", async ({
   expect(articleMetrics.asidePosition).toBe("static");
 });
 
+test("homepage Playbook feature keeps copy below its image on mobile", async ({ page }) => {
+  await page.goto(baseURL);
+  const layout = await page.locator(".journal-feature").evaluate((card) => {
+    const image = card.querySelector("img").getBoundingClientRect();
+    const copy = card.querySelector("div").getBoundingClientRect();
+    return {
+      imageBottom: image.bottom,
+      copyTop: copy.top,
+      imageHeight: image.height,
+      imageWidth: image.width,
+      copyBackground: getComputedStyle(card.querySelector("div")).backgroundColor,
+    };
+  });
+
+  expect(layout.imageBottom).toBeLessThanOrEqual(layout.copyTop + 1);
+  expect(layout.imageHeight).toBeLessThanOrEqual(layout.imageWidth * 0.76);
+  expect(layout.copyBackground).not.toBe("rgba(0, 0, 0, 0)");
+});
+
 for (const width of [320, 360, 390]) {
   for (const path of ["/", "/blog/", "/blog/wedding-lawn-games-guide/"]) {
     test(`${path} keeps visible content inside a ${width}px viewport`, async ({ page }) => {

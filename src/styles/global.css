@@ -370,10 +370,10 @@ footer > p { max-width: 460px; margin: 0; }
   .occasion-list article { grid-template-columns: 40px 1fr; gap: 1rem; }
   .occasion-list article p { grid-column: 2; }
   .coming-card { min-height: 360px; padding: 2rem; }
-  .journal-feature { grid-template-columns: 1fr; box-shadow: 4px 4px 0 var(--ink); }
-  .journal-feature img { min-height: 230px; border-right: 0; border-bottom: var(--border); }
-  .journal-feature div { padding: 1.4rem; }
-  .journal-feature h3 { font-size: 2.35rem; }
+  .journal-feature { grid-template-columns: 1fr; grid-template-rows: auto auto; min-height: 0; box-shadow: 4px 4px 0 var(--ink); }
+  .journal-feature img { display: block; height: auto; min-height: 0; aspect-ratio: 4 / 3; border-right: 0; border-bottom: var(--border); }
+  .journal-feature div { position: relative; padding: 1.4rem; background: var(--paper); }
+  .journal-feature h3 { font-size: 2.15rem; }
   .journal-links h3 { font-size: 1.6rem; }
   .article-grid, .blog-method { grid-template-columns: 1fr; }
   .blog-hero-copy { padding: 3.5rem 5vw; }
