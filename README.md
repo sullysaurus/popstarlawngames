@@ -24,7 +24,19 @@ Video asset specifications live in `public/assets/README.md`.
 
 The nightly GitHub Action collects GA4, Google Search Console, and capped Keywords Everywhere
 data; builds a private HTML dashboard; and scores a review-first content queue. Approved queue
-issues can generate Astro draft pull requests with OpenAI. Nothing publishes without a merge.
+items are drafted locally with Codex, without an OpenAI API key. Nothing publishes without a merge.
+
+The preferred drafting flow is local and does not require the OpenAI API:
+
+```sh
+npm run content:queue
+npm run content:brief -- next
+```
+
+Then ask Codex: `Use $popstar-content-engine to draft the next queued article locally.`
+
+The protected website dashboard lives at `https://popstarlawngames.com/seo-dashboard/` after its
+Netlify password and ingestion token are configured.
 
 See [`docs/seo-dashboard-setup.md`](docs/seo-dashboard-setup.md) for the one-time Google access,
 GitHub secrets, costs, and editorial workflow.

@@ -1,0 +1,187 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout title="SEO Command Center | Popstar Lawn Games" description="Private Popstar Lawn Games organic growth dashboard." noindex={true}>
+  <main class="command-shell">
+    <header class="command-header">
+      <a class="command-brand" href="/" aria-label="Popstar Lawn Games home">
+        <img src="/assets/popstar-mark.png" alt="" />
+        <span>Popstar<br />SEO Command</span>
+      </a>
+      <div class="header-meta">
+        <span class="live-dot" aria-hidden="true"></span>
+        <span id="report-age">Private field report</span>
+        <button id="logout" class="text-button" type="button" hidden>Log out</button>
+      </div>
+    </header>
+
+    <section id="login-panel" class="login-stage" aria-labelledby="login-title">
+      <div class="login-card">
+        <p class="dashboard-eyebrow">Authorized crew only</p>
+        <h1 id="login-title">Open the<br /><em>playbook.</em></h1>
+        <p>Organic performance, search demand, and the next content plays—all in one private view.</p>
+        <form id="dashboard-login">
+          <label><span>Username</span><input id="dashboard-user" name="username" autocomplete="username" value="danny" required /></label>
+          <label><span>Password</span><input id="dashboard-password" name="password" type="password" autocomplete="current-password" required /></label>
+          <button class="command-button" type="submit">Enter command center <span aria-hidden="true">→</span></button>
+          <p id="login-message" class="login-message" role="status"></p>
+        </form>
+      </div>
+      <div class="scoreboard-art" aria-hidden="true"><span>SEO</span><strong>01</strong><small>Next play starts here</small></div>
+    </section>
+
+    <section id="dashboard" class="dashboard" hidden>
+      <div class="dashboard-intro">
+        <div><p class="dashboard-eyebrow">Tonight’s field report</p><h1>What’s moving<br /><em>the crowd?</em></h1></div>
+        <div class="source-strip" id="source-strip" aria-label="Data source status"></div>
+      </div>
+
+      <section class="scoreboard" aria-label="Organic performance">
+        <article class="hero-score"><span>Organic sessions</span><strong id="metric-sessions">—</strong><small id="delta-sessions">Awaiting comparison</small></article>
+        <article><span>Search clicks</span><strong id="metric-clicks">—</strong><small id="delta-clicks">Awaiting comparison</small></article>
+        <article><span>Impressions</span><strong id="metric-impressions">—</strong><small id="delta-impressions">Awaiting comparison</small></article>
+        <article><span>Organic leads</span><strong id="metric-leads">—</strong><small id="delta-leads">Awaiting comparison</small></article>
+      </section>
+
+      <section class="next-play" aria-labelledby="next-title">
+        <div class="play-number"><small>Priority</small><strong id="next-score">—</strong></div>
+        <div class="play-copy"><p class="dashboard-eyebrow">The next play</p><h2 id="next-title">Loading opportunity…</h2><p id="next-keyword"></p></div>
+        <button id="copy-prompt" class="command-button command-button-light" type="button">Copy local draft prompt</button>
+      </section>
+
+      <section class="queue-section">
+        <div class="section-title"><div><p class="dashboard-eyebrow">Editorial lineup</p><h2>Content queue</h2></div><p>Prioritized by demand, ranking proximity, business value, page fit, competition, and effort.</p></div>
+        <div class="queue-table-wrap"><table><thead><tr><th>Score</th><th>Opportunity</th><th>Move</th><th>Status</th><th>Demand</th><th>Position</th></tr></thead><tbody id="queue-body"></tbody></table></div>
+      </section>
+
+      <section class="query-section">
+        <div class="section-title"><div><p class="dashboard-eyebrow">Crowd signals</p><h2>Search queries</h2></div><p>Real searches already putting Popstar in the field.</p></div>
+        <div id="query-list" class="query-list"></div>
+      </section>
+    </section>
+  </main>
+</BaseLayout>
+
+<script>
+  type MetricSet = Record<string, number | null | undefined>;
+  type QueueItem = {id:string; score:number; title:string; keyword:string; action:string; workflow?:{status?:string}; metrics?:{monthlyVolume?:number|null;gscPosition?:number|null}};
+  type SearchRow = {keys?:string[];query?:string;clicks?:number;impressions?:number;position?:number};
+  type Report = {generatedAt:string;status:Record<string,{ok:boolean}>;ga4?:{current?:MetricSet;previous?:MetricSet};gsc?:{totals?:MetricSet;previousTotals?:MetricSet;queries?:SearchRow[]};queue?:QueueItem[]};
+  function query<T extends Element>(selector: string): T { const node = document.querySelector<T>(selector); if (!node) throw new Error(`Missing dashboard element: ${selector}`); return node; }
+  const loginPanel = query<HTMLElement>("#login-panel");
+  const dashboard = query<HTMLElement>("#dashboard");
+  const loginForm = query<HTMLFormElement>("#dashboard-login");
+  const message = query<HTMLElement>("#login-message");
+  const logout = query<HTMLButtonElement>("#logout");
+  const copyPrompt = query<HTMLButtonElement>("#copy-prompt");
+  const format = (value: unknown, digits = 0) => value == null ? "—" : Number(value).toLocaleString("en-US", {maximumFractionDigits: digits});
+  const change = (current: number, previous: number) => previous ? ((current - previous) / previous) * 100 : null;
+  let nextItem: QueueItem | undefined;
+
+  function setDelta(id: string, current: unknown, previous: unknown) {
+    const element = query<HTMLElement>(`#${id}`);
+    const value = change(Number(current || 0), Number(previous || 0));
+    element.textContent = value == null ? "No prior comparison" : `${value >= 0 ? "+" : ""}${format(value, 1)}% vs prior 28 days`;
+    element.dataset.direction = value == null ? "flat" : value >= 0 ? "up" : "down";
+  }
+
+  function addText(parent: Element, tag: keyof HTMLElementTagNameMap, text: unknown, className = "") {
+    const node = document.createElement(tag);
+    node.textContent = String(text ?? "");
+    if (className) node.className = className;
+    parent.append(node);
+    return node;
+  }
+
+  function render(report: Report) {
+    const current = report.ga4?.current || {};
+    const previous = report.ga4?.previous || {};
+    const search = report.gsc?.totals || {};
+    const previousSearch = report.gsc?.previousTotals || {};
+    query("#metric-sessions").textContent = format(current.sessions);
+    query("#metric-clicks").textContent = format(search.clicks);
+    query("#metric-impressions").textContent = format(search.impressions);
+    query("#metric-leads").textContent = format(current.leads);
+    setDelta("delta-sessions", current.sessions, previous.sessions);
+    setDelta("delta-clicks", search.clicks, previousSearch.clicks);
+    setDelta("delta-impressions", search.impressions, previousSearch.impressions);
+    setDelta("delta-leads", current.leads, previous.leads);
+    const generated = new Date(report.generatedAt);
+    query("#report-age").textContent = `Updated ${generated.toLocaleString("en-US", {dateStyle: "medium", timeStyle: "short"})}`;
+
+    const sources = query("#source-strip");
+    sources.replaceChildren();
+    Object.entries(report.status || {}).forEach(([name, state]) => {
+      const badge = document.createElement("span");
+      badge.className = state.ok ? "source-ok" : "source-warn";
+      badge.textContent = `${name.toUpperCase()} · ${state.ok ? "live" : "setup"}`;
+      sources.append(badge);
+    });
+
+    const queue = report.queue || [];
+    nextItem = queue.find((item) => item.action !== "landing-page" && !["drafted", "published"].includes(item.workflow?.status || "queued")) || queue[0];
+    query("#next-score").textContent = nextItem ? format(nextItem.score) : "—";
+    query("#next-title").textContent = nextItem?.title || "Queue is clear";
+    query("#next-keyword").textContent = nextItem ? `${nextItem.keyword} · ${nextItem.action}` : "No eligible drafts remain.";
+    copyPrompt.disabled = !nextItem;
+
+    const queueBody = query("#queue-body");
+    queueBody.replaceChildren();
+    queue.forEach((item) => {
+      const row = document.createElement("tr");
+      const scoreCell = document.createElement("td"); addText(scoreCell, "span", format(item.score), "queue-score"); row.append(scoreCell);
+      const titleCell = document.createElement("td"); addText(titleCell, "strong", item.title); addText(titleCell, "small", item.keyword); row.append(titleCell);
+      addText(row, "td", item.action);
+      addText(row, "td", item.workflow?.status || "queued", "status-cell");
+      addText(row, "td", format(item.metrics?.monthlyVolume));
+      addText(row, "td", format(item.metrics?.gscPosition, 1));
+      queueBody.append(row);
+    });
+
+    const queryList = query("#query-list");
+    queryList.replaceChildren();
+    const queries = (report.gsc?.queries || []).slice(0, 8);
+    if (!queries.length) addText(queryList, "p", "Connect Search Console to see live search queries.", "empty-state");
+    queries.forEach((query, index) => {
+      const item = document.createElement("article");
+      addText(item, "span", String(index + 1).padStart(2, "0"), "query-number");
+      const copy = document.createElement("div"); addText(copy, "strong", query.keys?.[0] || query.query || "Unknown query"); addText(copy, "small", `${format(query.impressions)} impressions · position ${format(query.position, 1)}`); item.append(copy);
+      addText(item, "b", format(query.clicks));
+      queryList.append(item);
+    });
+  }
+
+  async function load(token: string) {
+    message.textContent = "Opening the playbook…";
+    const response = await fetch("/api/seo-dashboard", {headers: {Authorization: `Basic ${token}`}, cache: "no-store"});
+    const result = await response.json().catch(() => ({error: "Dashboard returned an invalid response"}));
+    if (!response.ok) throw new Error(result.error || "Could not open dashboard");
+    sessionStorage.setItem("popstar-dashboard-auth", token);
+    render(result);
+    loginPanel.hidden = true;
+    dashboard.hidden = false;
+    logout.hidden = false;
+  }
+
+  loginForm.addEventListener("submit", async (event) => {
+    event.preventDefault();
+    const user = query<HTMLInputElement>("#dashboard-user").value;
+    const password = query<HTMLInputElement>("#dashboard-password").value;
+    try { await load(btoa(`${user}:${password}`)); } catch (error) { message.textContent = error instanceof Error ? error.message : "Could not open dashboard"; }
+  });
+  logout.addEventListener("click", () => { sessionStorage.removeItem("popstar-dashboard-auth"); location.reload(); });
+  copyPrompt.addEventListener("click", async () => {
+    if (!nextItem) return;
+    const prompt = `Use $popstar-content-engine to draft the content queue item "${nextItem.id}" locally, run the editorial and build checks, and leave it ready for my review.`;
+    await navigator.clipboard.writeText(prompt);
+    copyPrompt.textContent = "Prompt copied ✓";
+    setTimeout(() => { copyPrompt.textContent = "Copy local draft prompt"; }, 1800);
+  });
+  const saved = sessionStorage.getItem("popstar-dashboard-auth");
+  if (saved) load(saved).catch((error) => { sessionStorage.removeItem("popstar-dashboard-auth"); message.textContent = error instanceof Error ? error.message : "Could not open dashboard"; });
+</script>
+
+<style is:global>
+  [hidden]{display:none!important}body{background:#f3eddf;-webkit-font-smoothing:antialiased}.command-shell{min-height:100vh;color:#171717;background:linear-gradient(rgba(23,23,23,.035) 1px,transparent 1px),#f3eddf;background-size:100% 36px}.command-header{height:84px;padding:12px clamp(18px,4vw,56px);display:flex;align-items:center;justify-content:space-between;border-bottom:1px solid rgba(23,23,23,.16);background:rgba(255,250,240,.94)}.command-brand{display:flex;align-items:center;gap:12px;text-decoration:none;font:900 14px/.85 var(--serif);letter-spacing:-.02em;text-transform:uppercase}.command-brand img{width:48px;height:48px;object-fit:contain}.header-meta{display:flex;align-items:center;gap:12px;font-size:12px;font-weight:700;color:#696357}.live-dot{width:8px;height:8px;border-radius:50%;background:#1b8f55;box-shadow:0 0 0 4px rgba(27,143,85,.12)}.text-button{min-height:44px;padding:0 12px;border:0;background:none;text-decoration:underline;text-underline-offset:4px;cursor:pointer}.login-stage{min-height:calc(100vh - 84px);display:grid;grid-template-columns:minmax(0,1.1fr) minmax(300px,.9fr);align-items:stretch}.login-card{display:flex;flex-direction:column;justify-content:center;padding:clamp(50px,9vw,130px);background:#fffaf0}.dashboard-eyebrow{margin:0 0 14px;font-size:11px;font-weight:800;letter-spacing:.17em;text-transform:uppercase}.login-card h1,.dashboard-intro h1{margin:0;font:900 clamp(54px,8vw,104px)/.82 var(--serif);letter-spacing:-.055em}.login-card h1 em,.dashboard-intro h1 em{color:#ff5d47}.login-card>p:not(.dashboard-eyebrow){max-width:520px;font-size:18px;color:#555047}.login-card form{max-width:490px;margin-top:28px;display:grid;grid-template-columns:1fr 1fr;gap:14px}.login-card label{min-width:0}.login-card label span{font-size:10px}.login-card input{border:1px solid rgba(23,23,23,.28);border-radius:8px;background:#eee7da}.login-card .command-button{grid-column:1/-1}.login-message{grid-column:1/-1;min-height:22px;margin:0;color:#a33a2e;font-weight:700}.scoreboard-art{display:flex;flex-direction:column;justify-content:center;align-items:center;padding:40px;background:#1558d6;color:white;border-left:1px solid #171717}.scoreboard-art span{font-size:12px;font-weight:800;letter-spacing:.3em}.scoreboard-art strong{font:900 clamp(130px,20vw,310px)/.78 var(--serif);font-variant-numeric:tabular-nums;color:#ffd43b;text-shadow:10px 10px 0 #171717}.scoreboard-art small{margin-top:40px;font-size:12px;font-weight:800;letter-spacing:.16em;text-transform:uppercase}.command-button{min-height:52px;padding:12px 18px;display:inline-flex;align-items:center;justify-content:space-between;gap:18px;border:1px solid #171717;border-radius:8px;background:#171717;color:white;font-weight:800;cursor:pointer;transition:transform 140ms cubic-bezier(.23,1,.32,1),box-shadow 140ms cubic-bezier(.23,1,.32,1)}.command-button:hover{transform:translateY(-2px);box-shadow:0 6px 0 #ff5d47}.command-button:active{transform:scale(.97)}.command-button:focus-visible{outline:3px solid #1558d6;outline-offset:3px}.command-button:disabled{opacity:.45;cursor:not-allowed}.dashboard{max-width:1440px;margin:auto;padding:clamp(28px,5vw,72px)}.dashboard-intro{display:grid;grid-template-columns:1fr auto;gap:32px;align-items:end;margin-bottom:44px}.dashboard-intro h1{font-size:clamp(52px,7vw,94px)}.source-strip{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:8px}.source-strip span{padding:8px 10px;border-radius:999px;font-size:10px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}.source-ok{background:#daf2e5;color:#12643d}.source-warn{background:#ffe2bd;color:#8c4700}.scoreboard{display:grid;grid-template-columns:1.4fr repeat(3,1fr);background:#171717;color:white;border-radius:14px;overflow:hidden;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 12px 28px rgba(0,0,0,.12)}.scoreboard article{min-height:170px;padding:24px;display:flex;flex-direction:column;justify-content:space-between;border-left:1px solid rgba(255,255,255,.13)}.scoreboard .hero-score{background:#ffd43b;color:#171717;border:0}.scoreboard span{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}.scoreboard strong{font:900 clamp(38px,5vw,72px)/1 var(--serif);font-variant-numeric:tabular-nums}.scoreboard small{font-size:11px;color:#bdb8ae}.scoreboard .hero-score small{color:#514b3f}.scoreboard small[data-direction="up"]{color:#70dea2}.scoreboard .hero-score small[data-direction="up"]{color:#12643d}.scoreboard small[data-direction="down"]{color:#ff8d7d}.next-play{margin:22px 0 54px;padding:24px;display:grid;grid-template-columns:auto 1fr auto;gap:24px;align-items:center;border-radius:14px;background:#1558d6;color:white;box-shadow:0 0 0 1px rgba(0,0,0,.1),0 8px 20px rgba(21,88,214,.16)}.play-number{width:92px;height:92px;display:grid;place-items:center;border-radius:50%;background:#ffd43b;color:#171717}.play-number small{align-self:end;font-size:9px;font-weight:800;text-transform:uppercase}.play-number strong{align-self:start;font:900 42px/.9 var(--serif);font-variant-numeric:tabular-nums}.play-copy h2{margin:0;font:900 clamp(24px,3vw,38px)/1 var(--serif)}.play-copy p:last-child{margin:8px 0 0;color:#dbe5ff}.command-button-light{background:#fffaf0;color:#171717}.section-title{display:grid;grid-template-columns:1fr minmax(260px,420px);gap:30px;align-items:end;margin-bottom:18px}.section-title h2{margin:0;font:900 clamp(36px,5vw,62px)/.9 var(--serif)}.section-title>p{margin:0;color:#615b51}.queue-table-wrap{overflow:auto;border-radius:12px;background:#fffaf0;box-shadow:0 0 0 1px rgba(0,0,0,.08),0 4px 12px rgba(0,0,0,.05)}table{width:100%;min-width:780px;border-collapse:collapse}th,td{padding:15px 16px;text-align:left;border-bottom:1px solid rgba(23,23,23,.1)}th{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:#746d61}td{font-size:13px}td strong,td small{display:block}td small{margin-top:4px;color:#746d61;font-size:11px;line-height:1.35}.queue-score{display:grid;place-items:center;width:38px;height:38px;border-radius:50%;background:#ffd43b;font-weight:900;font-variant-numeric:tabular-nums}.status-cell{text-transform:capitalize}.query-section{margin-top:58px}.query-list{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid rgba(23,23,23,.2)}.query-list article{padding:17px 8px;display:grid;grid-template-columns:40px 1fr auto;align-items:center;gap:12px;border-bottom:1px solid rgba(23,23,23,.16)}.query-list article:nth-child(odd){border-right:1px solid rgba(23,23,23,.16);padding-right:20px}.query-number{font:800 11px var(--sans);color:#867f74}.query-list strong,.query-list small{display:block}.query-list small{margin-top:3px;color:#6f685e}.query-list b{font:900 26px var(--serif);font-variant-numeric:tabular-nums}.empty-state{padding:24px;color:#6f685e}@media(max-width:900px){.scoreboard{grid-template-columns:1fr 1fr}.scoreboard article:nth-child(3){border-left:0;border-top:1px solid rgba(255,255,255,.13)}.next-play{grid-template-columns:auto 1fr}.next-play .command-button{grid-column:1/-1}.login-stage{grid-template-columns:1fr}.scoreboard-art{display:none}.dashboard-intro,.section-title{grid-template-columns:1fr}.source-strip{justify-content:flex-start}}@media(max-width:620px){.command-header{height:auto;min-height:76px}.header-meta>#report-age{display:none}.login-card{padding:46px 20px}.login-card form{grid-template-columns:1fr}.login-card .command-button{grid-column:auto}.dashboard{padding:30px 14px 60px}.scoreboard{grid-template-columns:1fr 1fr}.scoreboard article{min-height:138px;padding:18px}.scoreboard strong{font-size:40px}.next-play{grid-template-columns:1fr;padding:20px}.play-number{width:76px;height:76px}.query-list{grid-template-columns:1fr}.query-list article:nth-child(odd){border-right:0;padding-right:8px}.source-strip{display:grid;grid-template-columns:1fr 1fr}.section-title>p{font-size:14px}}
+</style>

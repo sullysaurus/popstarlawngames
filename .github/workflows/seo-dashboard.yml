@@ -17,6 +17,9 @@ jobs:
   report:
     runs-on: ubuntu-latest
     timeout-minutes: 15
+    env:
+      SEO_DASHBOARD_ENDPOINT: ${{ vars.SEO_DASHBOARD_ENDPOINT }}
+      SEO_DASHBOARD_INGEST_TOKEN: ${{ secrets.SEO_DASHBOARD_INGEST_TOKEN }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -38,6 +41,9 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SEO_CREATE_QUEUE_ISSUES: ${{ vars.SEO_CREATE_QUEUE_ISSUES }}
           SEO_QUEUE_MAX_NEW: ${{ vars.SEO_QUEUE_MAX_NEW }}
+      - name: Send report to the private website dashboard
+        if: ${{ env.SEO_DASHBOARD_ENDPOINT != '' && env.SEO_DASHBOARD_INGEST_TOKEN != '' }}
+        run: curl --fail --silent --show-error --request PUT --header "Authorization: Bearer ${SEO_DASHBOARD_INGEST_TOKEN}" --header "Content-Type: application/json" --data-binary @reports/seo-dashboard/data.json "${SEO_DASHBOARD_ENDPOINT}"
       - name: Upload private dashboard
         if: ${{ github.event.repository.private || vars.SEO_ALLOW_PUBLIC_REPORTS == 'true' }}
         uses: actions/upload-artifact@v4
@@ -50,4 +56,3 @@ jobs:
           echo "## Popstar SEO report" >> "$GITHUB_STEP_SUMMARY"
           echo "The nightly run completed. Detailed metrics are only uploaded when the repository is private or SEO_ALLOW_PUBLIC_REPORTS is true." >> "$GITHUB_STEP_SUMMARY"
           echo "No content was auto-published." >> "$GITHUB_STEP_SUMMARY"
-

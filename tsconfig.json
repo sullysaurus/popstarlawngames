@@ -3,5 +3,6 @@
   "compilerOptions": {
     "allowJs": true,
     "checkJs": true
-  }
+  },
+  "exclude": ["dist", "public", "scripts", "tests", "netlify/functions"]
 }

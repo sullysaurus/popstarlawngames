@@ -9,6 +9,7 @@ interface Props {
   type?: "website" | "article";
   publishedDate?: Date;
   updatedDate?: Date;
+  noindex?: boolean;
 }
 
 const {
@@ -18,6 +19,7 @@ const {
   type = "website",
   publishedDate,
   updatedDate,
+  noindex = false,
 } = Astro.props;
 
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site) : undefined;
@@ -32,6 +34,7 @@ const socialImage = Astro.site ? new URL(image, Astro.site) : image;
     <GoogleAnalytics />
     <title>{title}</title>
     <meta name="description" content={description} />
+    {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
     <link rel="icon" type="image/png" href="/assets/popstar-mark.png" />
     {canonical && <link rel="canonical" href={canonical} />}
     <meta property="og:type" content={type} />

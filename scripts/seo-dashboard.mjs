@@ -99,13 +99,18 @@ async function fetchGsc(token) {
 }
 
 async function fetchKeywords(keywords) {
+  const importPath = path.join(root, "seo/keywords-everywhere-import.json");
+  try {
+    const rows = JSON.parse(await fs.readFile(importPath, "utf8"));
+    return {rows, source: "local import"};
+  } catch (error) { if (error.code !== "ENOENT") throw error; }
   if (!process.env.KEYWORDS_EVERYWHERE_API_KEY) throw new Error("KEYWORDS_EVERYWHERE_API_KEY is not configured");
   const requestedLimit = Number(process.env.KEYWORDS_EVERYWHERE_DAILY_LIMIT || 20);
   const limit = Math.max(1, Math.min(100, requestedLimit));
   const form = new URLSearchParams({dataSource: "gkp", country: "us", currency: "usd"});
   keywords.slice(0, limit).forEach((keyword) => form.append("kw[]", keyword));
   const payload = await apiJson("https://api.keywordseverywhere.com/v1/get_keyword_data", {method: "POST", headers: {Authorization: `Bearer ${process.env.KEYWORDS_EVERYWHERE_API_KEY}`, "Content-Type": "application/x-www-form-urlencoded"}, body: form});
-  return (payload.data || []).map((row) => ({keyword: row.keyword, volume: Number(row.vol || 0), cpc: row.cpc, competition: Number(row.competition || 0), trend: row.trend || []}));
+  return {source: "API", rows: (payload.data || []).map((row) => ({keyword: row.keyword, volume: Number(row.vol || 0), cpc: row.cpc, competition: Number(row.competition || 0), trend: row.trend || []}))};
 }
 
 async function existingTargetKeywords() {
@@ -140,12 +145,15 @@ async function buildReport() {
   }
   try {
     const candidates = [...new Set([...gsc.queries.map((row) => row.keys?.[0]), ...seeds.map((seed) => seed.keyword)].filter(Boolean))];
-    keywords = await fetchKeywords(candidates);
-    status.keywords = {ok: true};
+    const result = await fetchKeywords(candidates);
+    keywords = result.rows;
+    status.keywords = {ok: true, message: result.source};
   } catch (error) { status.keywords.message = error.message; }
 
   const existingKeywords = await existingTargetKeywords();
-  return {generatedAt: new Date().toISOString(), periods, status, ga4, gsc, keywords, queue: scoreQueue(seeds, keywords, gsc.queries, existingKeywords)};
+  const contentState = JSON.parse(await fs.readFile(path.join(root, "seo/content-state.json"), "utf8"));
+  const queue = scoreQueue(seeds, keywords, gsc.queries, existingKeywords).map((item) => ({...item, workflow: contentState[item.id] || {status: "queued"}}));
+  return {generatedAt: new Date().toISOString(), periods, status, ga4, gsc, keywords, queue};
 }
 
 const data = await buildReport();

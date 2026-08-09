@@ -10,3 +10,4 @@ test-results/
 playwright-report/
 .seo-cache/
 reports/seo-dashboard/
+seo/keywords-everywhere-import.json

@@ -10,16 +10,19 @@
     "preview": "astro preview",
     "check": "astro check",
     "test:mobile": "playwright test tests/mobile.spec.js",
+    "test:dashboard": "playwright test tests/dashboard.spec.js",
     "test:seo": "node --test tests/seo-dashboard.test.mjs",
     "seo:dashboard": "node scripts/seo-dashboard.mjs",
     "seo:queue": "node scripts/sync-content-queue.mjs",
-    "seo:draft": "node scripts/generate-content-draft.mjs"
+    "content:queue": "node scripts/local-content-queue.mjs list",
+    "content:brief": "node scripts/local-content-queue.mjs brief",
+    "content:mark": "node scripts/local-content-queue.mjs mark"
   },
   "dependencies": {
     "@astrojs/check": "^0.9.4",
+    "@netlify/blobs": "^10.7.12",
     "astro": "^5.13.2",
     "google-auth-library": "^11.0.0",
-    "openai": "^7.4.0",
     "typescript": "^5.9.2"
   },
   "devDependencies": {

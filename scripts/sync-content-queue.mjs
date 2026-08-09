@@ -22,7 +22,6 @@ async function github(route, options = {}) {
 for (const [name, color, description] of [
   ["content-queue", "245bd7", "SEO opportunities waiting for editorial review"],
   ["seo", "ffd438", "Search optimization work"],
-  ["draft-approved", "ff604f", "Generate a reviewed content draft PR"],
 ]) {
   try { await github(`/repos/${owner}/${repo}/labels`, {method: "POST", body: JSON.stringify({name, color, description})}); } catch (error) { if (!String(error.message).startsWith("422")) throw error; }
 }
@@ -39,7 +38,7 @@ for (const item of queue) {
     intent: item.intent, outline: item.outline, score: item.score, action: item.action,
     metrics: item.metrics, evidence: item.evidence,
   };
-  const draftStep = item.action === "landing-page" ? "3. Create a designed landing page from this brief; the blog-draft generator intentionally rejects landing pages." : "3. Add the `draft-approved` label to generate a draft PR.";
+  const draftStep = item.action === "landing-page" ? "3. Create a designed landing page from this brief; do not turn it into a blog post." : `3. In the local Codex workspace, run \`npm run content:brief -- ${item.id}\`, then ask: \`Use $popstar-content-engine to draft this queued article locally.\``;
   const body = `<!-- seo-keyword:${item.keyword} -->\n## Editorial brief\n\n- **Target keyword:** ${item.keyword}\n- **Recommended action:** ${item.action}\n- **Priority score:** ${item.score}/100 (planning signal, not a traffic forecast)\n- **Intent:** ${item.intent}\n- **Evidence:** ${item.evidence}\n\n## Proposed outline\n\n${item.outline.map((heading) => `- ${heading}`).join("\n")}\n\n## Workflow\n\n1. Validate the opportunity and angle.\n2. Edit this brief if needed.\n${draftStep}\n4. Review facts, voice, internal links, and conversion path before merging.\n\n\`\`\`json seo-brief\n${JSON.stringify(brief, null, 2)}\n\`\`\`\n`;
   const issue = await github(`/repos/${owner}/${repo}/issues`, {method: "POST", body: JSON.stringify({title: `[SEO] ${item.title}`, body, labels: ["content-queue", "seo"]})});
   console.log(`Created #${issue.number}: ${item.title}`);

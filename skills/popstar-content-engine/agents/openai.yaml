@@ -1,0 +1,4 @@
+interface:
+  display_name: "Popstar Content Engine"
+  short_description: "Draft reviewed SEO content without an API"
+  default_prompt: "Use $popstar-content-engine to draft the next approved Popstar SEO article locally."

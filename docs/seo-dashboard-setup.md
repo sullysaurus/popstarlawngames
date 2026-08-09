@@ -5,7 +5,23 @@ The system has two guarded workflows:
 1. **Nightly SEO dashboard** measures organic performance, enriches a limited keyword set, and creates a prioritized content queue.
 2. **Generate reviewed SEO draft** turns an approved queue issue into an Astro Markdown draft and opens a pull request.
 
-No workflow merges a pull request or publishes content. Netlify only publishes a draft after a human merges it into `main`.
+No workflow merges a pull request or publishes content. Netlify only publishes a draft after a human merges it into `main`. Drafting uses the repository's `$popstar-content-engine` skill and does not require an OpenAI API key.
+
+## Website dashboard
+
+The private dashboard route is `https://popstarlawngames.com/seo-dashboard/`. Its Astro page contains no analytics data. A Netlify Function authenticates requests and reads the latest nightly report from Netlify Blobs, whose data persists across deploys.
+
+Add these environment variables in **Netlify → Project configuration → Environment variables**. Do not put their values in `netlify.toml` or the repository:
+
+| Name | Purpose |
+| --- | --- |
+| `SEO_DASHBOARD_USER` | Login username; defaults to `danny` |
+| `SEO_DASHBOARD_PASSWORD` | A unique dashboard password |
+| `SEO_DASHBOARD_INGEST_TOKEN` | A separate long random token used only by GitHub to upload reports |
+
+Add the same `SEO_DASHBOARD_INGEST_TOKEN` value as a GitHub Actions secret. The non-secret GitHub variable `SEO_DASHBOARD_ENDPOINT` should be `https://popstarlawngames.com/api/seo-dashboard`.
+
+After configuring Netlify variables, trigger a new deploy so Functions receive them. Then manually run **Nightly SEO dashboard** once from GitHub Actions. The report will appear at the protected website route.
 
 ## 1. Connect Google Analytics and Search Console
 
@@ -45,17 +61,24 @@ By default the nightly run creates the dashboard but does not create GitHub issu
 | `SEO_CREATE_QUEUE_ISSUES` | `true` | Creates issues for high-scoring, not-yet-queued opportunities |
 | `SEO_QUEUE_MAX_NEW` | `3` | Maximum new briefs per nightly run |
 
-The workflow creates `content-queue`, `seo`, and `draft-approved` labels. It uses a hidden keyword marker to avoid duplicate issues.
+The workflow creates `content-queue` and `seo` labels. It uses a hidden keyword marker to avoid duplicate issues.
 
-To generate a new guide or update an existing article, review and edit the JSON brief in an issue, then add the `draft-approved` label. You can also run **Generate reviewed SEO draft** manually with an issue number. Transactional landing-page opportunities stay in the queue for a designed page implementation; the engine intentionally refuses to turn them into mismatched blog posts.
+To generate a new guide or update an existing article, review and edit the brief, run the local brief command shown in the issue, and invoke `$popstar-content-engine` in Codex. Transactional landing-page opportunities stay in the queue for a designed page implementation; the engine intentionally refuses to turn them into mismatched blog posts.
 
-## 4. Connect draft generation
+## 4. Generate content locally without an OpenAI API bill
 
-Add the GitHub Actions secret `OPENAI_API_KEY`. Optionally set `OPENAI_MODEL`; the default is `gpt-5-mini`.
+Run:
 
-Under **Settings → Actions → General → Workflow permissions**, choose **Read and write permissions** and enable **Allow GitHub Actions to create and approve pull requests**. The workflow creates a branch and pull request; it cannot merge or deploy it.
+```sh
+npm run content:queue
+npm run content:brief -- next
+```
 
-Before merging every generated draft, verify:
+Then ask Codex: `Use $popstar-content-engine to draft the next queued article locally.` The skill reads the generated brief, authors or updates Astro Markdown directly, runs the editorial/build checks, and records the item as drafted in `seo/content-state.json`. It never calls the OpenAI API and never publishes without review.
+
+To import Keywords Everywhere research without its API, copy `seo/keywords-everywhere-import.example.json` to the ignored file `seo/keywords-everywhere-import.json` and replace the sample rows with exported keyword data. Local imports take precedence over the API.
+
+Before merging every locally generated draft, verify:
 
 - prices, service area, package details, and local facts;
 - that the article answers the query instead of padding it;
@@ -63,7 +86,7 @@ Before merging every generated draft, verify:
 - that it does not compete with an existing page targeting the same intent;
 - its conversion path to packages and the availability form.
 
-## 5. Use the dashboard
+## 5. Use the downloadable dashboard
 
 The job runs nightly at 08:23 UTC and can also be started from the Actions tab. Open a completed **Nightly SEO dashboard** run and download the `popstar-seo-dashboard-*` artifact. Open `index.html` locally.
 
