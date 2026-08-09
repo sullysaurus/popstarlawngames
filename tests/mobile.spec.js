@@ -36,6 +36,27 @@ test("date request explains missing required details", async ({ page }) => {
   await expect(page.locator("#availability-message")).toContainText("Add a valid date");
 });
 
+test("native date control stays inside the mobile form", async ({ page }) => {
+  await page.setViewportSize({ width: 320, height: 760 });
+  await page.goto(baseURL);
+
+  const bounds = await page.locator("#event-date").evaluate((input) => {
+    const inputRect = input.getBoundingClientRect();
+    const formRect = input.closest("form").getBoundingClientRect();
+    return {
+      inputLeft: inputRect.left,
+      inputRight: inputRect.right,
+      formLeft: formRect.left,
+      formRight: formRect.right,
+      minWidth: getComputedStyle(input).minWidth,
+    };
+  });
+
+  expect(bounds.inputLeft).toBeGreaterThanOrEqual(bounds.formLeft - 1);
+  expect(bounds.inputRight).toBeLessThanOrEqual(bounds.formRight + 1);
+  expect(bounds.minWidth).toBe("0px");
+});
+
 test("mobile blog layouts do not overflow or float the editorial note", async ({ page }) => {
   await page.goto(`${baseURL}/blog/`);
   const listMetrics = await page.evaluate(() => ({
