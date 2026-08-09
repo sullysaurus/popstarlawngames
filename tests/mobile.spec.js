@@ -5,35 +5,34 @@ const baseURL = process.env.POPSTAR_TEST_URL ?? "http://127.0.0.1:4321";
 
 test.use({ viewport: { width: 390, height: 844 } });
 
-test("mobile booking flow preserves event details and reaches a send path", async ({ page }) => {
+test("mobile booking form sends the complete request in one step", async ({ page }) => {
   await page.goto(baseURL);
 
   await expect(page.locator(".site-header > .button")).toBeVisible();
   await page.locator("#event-date").fill("2026-10-24");
   await page.locator("#event-zip").fill("27601");
   await page.locator("#event-type").selectOption({ label: "Wedding" });
-  await page.locator("#availability-form button").click();
-  await expect(page.locator("#availability-message")).toContainText("personally confirm October 24, 2026");
-
-  await page.locator(".package-select").first().click();
-  await expect(page.locator("#booking-dialog")).toBeVisible();
-  await expect(page.locator("#dialog-summary")).toContainText("October 24, 2026");
-  await expect(page.locator("#selected-event-date")).toHaveValue("2026-10-24");
-  await expect(page.locator("#selected-event-zip")).toHaveValue("27601");
-  await expect(page.locator("#selected-event-type")).toHaveValue("Wedding");
-
-  await page.locator('#booking-form input[name="name"]').fill("Taylor Guest");
-  await page.locator('#booking-form input[name="email"]').fill("taylor@example.com");
+  await page.locator("#event-package").selectOption("The Celebration Set");
+  await page.locator('#availability-form input[name="name"]').fill("Taylor Guest");
+  await page.locator('#availability-form input[name="email"]').fill("taylor@example.com");
   await page.locator("#booking-submit").click();
 
-  await expect(page.locator("#dialog-message")).toContainText(/request is in|email app is opening/);
+  await expect(page.locator("#availability-message")).toContainText(/request is in|email app is opening/);
   await expect(page.locator("#booking-submit")).toBeEnabled();
+});
+
+test("package card preselects the same single booking form", async ({ page }) => {
+  await page.goto(baseURL);
+  await page.locator('[data-package="The Headliner"]').click();
+  await expect(page.locator("#event-package")).toHaveValue("The Headliner");
+  await expect(page.locator("#availability-form")).toBeVisible();
+  await expect(page.locator("#booking-dialog")).toHaveCount(0);
 });
 
 test("date request explains missing required details", async ({ page }) => {
   await page.goto(baseURL);
   await page.locator("#availability-form button").click();
-  await expect(page.locator("#availability-message")).toContainText("Add a valid date");
+  await expect(page.locator("#availability-message")).toContainText("Complete the required fields");
 });
 
 test("native date control stays inside the mobile form", async ({ page }) => {

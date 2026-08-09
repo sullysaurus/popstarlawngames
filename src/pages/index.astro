@@ -83,17 +83,31 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
           <h2>Tell us when and where.</h2>
           <p>We’ll personally confirm the games and delivery window before you pay anything.</p>
         </div>
-        <form class="availability-form" id="availability-form" novalidate>
+        <form
+          class="availability-form"
+          id="availability-form"
+          name="booking-inquiry"
+          method="POST"
+          data-netlify="true"
+          data-netlify-honeypot="bot-field"
+          data-endpoint={bookingEndpoint}
+          data-email={bookingEmail}
+          novalidate
+        >
+          <input type="hidden" name="form-name" value="booking-inquiry" />
+          <p class="form-honeypot" aria-hidden="true">
+            <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+          </p>
           <label>
             <span>Event date</span>
-            <input type="date" id="event-date" name="event-date" required />
+            <input type="date" id="event-date" name="eventDate" required />
           </label>
           <label>
             <span>Delivery ZIP</span>
             <input
               type="text"
               id="event-zip"
-              name="event-zip"
+              name="deliveryZip"
               inputmode="numeric"
               autocomplete="postal-code"
               placeholder="27601"
@@ -104,7 +118,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
           </label>
           <label>
             <span>Event type</span>
-            <select id="event-type" name="event-type" required>
+            <select id="event-type" name="eventType" required>
               <option value="">Choose one</option>
               <option>Wedding</option>
               <option>Corporate event</option>
@@ -114,7 +128,30 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
               <option>Something else</option>
             </select>
           </label>
-          <button class="button button-accent" type="submit">Choose a rental set</button>
+          <label>
+            <span>Rental set</span>
+            <select id="event-package" name="package" required>
+              <option value="">Choose one</option>
+              <option value="The Social Set">The Social Set — from $299</option>
+              <option value="The Celebration Set">The Celebration Set — from $449</option>
+              <option value="The Headliner">The Headliner — from $699</option>
+              <option value="Hosted company event">Hosted company event — from $2,500</option>
+              <option value="Not sure">Not sure — recommend one</option>
+            </select>
+          </label>
+          <label>
+            <span>Your name</span>
+            <input type="text" name="name" autocomplete="name" required />
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" required />
+          </label>
+          <label>
+            <span>Phone <small>optional</small></span>
+            <input type="tel" name="phone" autocomplete="tel" />
+          </label>
+          <button class="button button-accent" id="booking-submit" type="submit">Request availability</button>
           <p class="form-message" id="availability-message" aria-live="polite"></p>
         </form>
       </section>
@@ -298,34 +335,5 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
       <p class="copyright">© <span id="year"></span> Popstar Lawn Games</p>
     </footer>
 
-    <dialog class="booking-dialog" id="booking-dialog">
-      <button class="dialog-close" type="button" aria-label="Close booking form">×</button>
-      <p class="eyebrow">Excellent choice</p>
-      <h2 id="dialog-title">Request your date.</h2>
-      <p id="dialog-summary">Tell us where to send the details.</p>
-      <form
-        id="booking-form"
-        name="booking-inquiry"
-        method="POST"
-        data-netlify="true"
-        data-netlify-honeypot="bot-field"
-        data-endpoint={bookingEndpoint}
-        data-email={bookingEmail}
-      >
-        <input type="hidden" name="form-name" value="booking-inquiry" />
-        <p class="form-honeypot" aria-hidden="true">
-          <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
-        </p>
-        <input type="hidden" id="selected-package" name="package" />
-        <input type="hidden" id="selected-event-date" name="eventDate" />
-        <input type="hidden" id="selected-event-zip" name="deliveryZip" />
-        <input type="hidden" id="selected-event-type" name="eventType" />
-        <label><span>Your name</span><input type="text" name="name" autocomplete="name" required /></label>
-        <label><span>Email</span><input type="email" name="email" autocomplete="email" required /></label>
-        <label><span>Phone</span><input type="tel" name="phone" autocomplete="tel" /></label>
-        <button class="button button-accent" id="booking-submit" type="submit">Request this package</button>
-        <p class="dialog-note" id="dialog-message" aria-live="polite">No payment required yet.</p>
-      </form>
-    </dialog>
   </body>
 </html>
