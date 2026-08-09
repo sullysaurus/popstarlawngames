@@ -8,3 +8,5 @@ dist/
 .netlify
 test-results/
 playwright-report/
+.seo-cache/
+reports/seo-dashboard/

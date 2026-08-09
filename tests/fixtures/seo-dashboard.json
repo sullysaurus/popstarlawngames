@@ -1,0 +1,25 @@
+{
+  "status": {"ga4":{"ok":true},"gsc":{"ok":true},"keywords":{"ok":true}},
+  "ga4": {
+    "current":{"sessions":120,"totalUsers":98,"screenPageViews":175,"engagementRate":0.62,"leads":7},
+    "previous":{"sessions":100,"totalUsers":90,"screenPageViews":150,"engagementRate":0.58,"leads":4},
+    "landingPages":[]
+  },
+  "gsc": {
+    "totals":{"clicks":42,"impressions":1800},
+    "previousTotals":{"clicks":31,"impressions":1400},
+    "queries":[
+      {"keys":["lawn game rentals raleigh nc"],"clicks":8,"impressions":240,"position":8.2},
+      {"keys":["how many lawn games for wedding"],"clicks":2,"impressions":190,"position":12.5}
+    ]
+  },
+  "keywords":[
+    {"keyword":"lawn game rentals raleigh nc","volume":320,"cpc":3.2,"competition":0.55},
+    {"keyword":"how many lawn games for wedding","volume":140,"cpc":1.1,"competition":0.2}
+  ],
+  "existingKeywords":["how many lawn games for wedding"],
+  "seeds":[
+    {"keyword":"lawn game rentals raleigh nc","title":"Premium Lawn Game Rentals in Raleigh, NC","type":"landing-page","category":"Raleigh Rentals","intent":"transactional","businessValue":5,"pageFit":5,"effort":3,"outline":["Packages"]},
+    {"keyword":"how many lawn games for wedding","title":"How Many Lawn Games Do You Need for a Wedding?","type":"guide","category":"Weddings","intent":"informational","businessValue":5,"pageFit":5,"effort":2,"outline":["Quick answer"]}
+  ]
+}

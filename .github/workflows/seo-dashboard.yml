@@ -1,0 +1,53 @@
+name: Nightly SEO dashboard
+
+on:
+  schedule:
+    - cron: "23 8 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  issues: write
+
+concurrency:
+  group: seo-dashboard
+  cancel-in-progress: false
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Build SEO dashboard and content queue
+        run: npm run seo:dashboard
+        env:
+          GOOGLE_SERVICE_ACCOUNT_JSON: ${{ secrets.GOOGLE_SERVICE_ACCOUNT_JSON }}
+          GA4_PROPERTY_ID: ${{ vars.GA4_PROPERTY_ID }}
+          GSC_PROPERTY: ${{ vars.GSC_PROPERTY }}
+          KEYWORDS_EVERYWHERE_API_KEY: ${{ secrets.KEYWORDS_EVERYWHERE_API_KEY }}
+          KEYWORDS_EVERYWHERE_DAILY_LIMIT: ${{ vars.KEYWORDS_EVERYWHERE_DAILY_LIMIT }}
+      - name: Sync approved opportunities into the issue queue
+        run: npm run seo:queue
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          SEO_CREATE_QUEUE_ISSUES: ${{ vars.SEO_CREATE_QUEUE_ISSUES }}
+          SEO_QUEUE_MAX_NEW: ${{ vars.SEO_QUEUE_MAX_NEW }}
+      - name: Upload private dashboard
+        if: ${{ github.event.repository.private || vars.SEO_ALLOW_PUBLIC_REPORTS == 'true' }}
+        uses: actions/upload-artifact@v4
+        with:
+          name: popstar-seo-dashboard-${{ github.run_number }}
+          path: reports/seo-dashboard/
+          retention-days: 90
+      - name: Add safe workflow summary
+        run: |
+          echo "## Popstar SEO report" >> "$GITHUB_STEP_SUMMARY"
+          echo "The nightly run completed. Detailed metrics are only uploaded when the repository is private or SEO_ALLOW_PUBLIC_REPORTS is true." >> "$GITHUB_STEP_SUMMARY"
+          echo "No content was auto-published." >> "$GITHUB_STEP_SUMMARY"
+

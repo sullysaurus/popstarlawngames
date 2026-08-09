@@ -1,0 +1,54 @@
+name: Generate reviewed SEO draft
+
+on:
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: Content queue issue number
+        required: true
+        type: number
+  issues:
+    types: [labeled]
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+
+jobs:
+  draft:
+    if: ${{ github.event_name == 'workflow_dispatch' || github.event.label.name == 'draft-approved' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    env:
+      ISSUE_NUMBER: ${{ github.event.inputs.issue_number || github.event.issue.number }}
+      GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+      OPENAI_MODEL: ${{ vars.OPENAI_MODEL }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - name: Read the approved editorial brief
+        run: gh api "repos/${GITHUB_REPOSITORY}/issues/${ISSUE_NUMBER}" > "$RUNNER_TEMP/seo-issue.json"
+      - name: Generate Markdown draft
+        id: generate
+        run: |
+          ARTICLE_PATH=$(npm run --silent seo:draft -- "$RUNNER_TEMP/seo-issue.json" | tail -n 1)
+          echo "article_path=$ARTICLE_PATH" >> "$GITHUB_OUTPUT"
+      - name: Open review pull request
+        run: |
+          BRANCH="seo-draft-${ISSUE_NUMBER}-${GITHUB_RUN_ID}"
+          git config user.name "popstar-seo-bot"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$BRANCH"
+          git add "${{ steps.generate.outputs.article_path }}"
+          git commit -m "Draft SEO article from issue #${ISSUE_NUMBER}"
+          git push origin "$BRANCH"
+          gh pr create --title "SEO draft: issue #${ISSUE_NUMBER}" --body "Generated from the reviewed content brief in #${ISSUE_NUMBER}. Please verify facts, voice, internal links, and conversion copy before merging.\n\nCloses #${ISSUE_NUMBER}" --base main --head "$BRANCH"
+

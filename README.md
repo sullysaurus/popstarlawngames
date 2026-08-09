@@ -20,6 +20,20 @@ and set `PUBLIC_BOOKING_FORM_ENDPOINT`. Without an endpoint, the form opens a pr
 
 Video asset specifications live in `public/assets/README.md`.
 
+## SEO command center
+
+The nightly GitHub Action collects GA4, Google Search Console, and capped Keywords Everywhere
+data; builds a private HTML dashboard; and scores a review-first content queue. Approved queue
+issues can generate Astro draft pull requests with OpenAI. Nothing publishes without a merge.
+
+See [`docs/seo-dashboard-setup.md`](docs/seo-dashboard-setup.md) for the one-time Google access,
+GitHub secrets, costs, and editorial workflow.
+
+```sh
+npm run test:seo
+npm run seo:dashboard
+```
+
 ## Publishing a guide
 
 Add a Markdown file to `src/content/blog/` using the frontmatter schema in
