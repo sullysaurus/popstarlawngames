@@ -5,6 +5,18 @@ const baseURL = process.env.POPSTAR_TEST_URL ?? "http://127.0.0.1:4321";
 
 test.use({ viewport: { width: 390, height: 844 } });
 
+test("Dangerous concept preview unlocks with its password", async ({ page }) => {
+  await page.goto(`${baseURL}/dangerous-lawn-games/`);
+  await expect(page.getByRole("heading", { name: "Enter the danger zone." })).toBeVisible();
+  await expect(page.locator("[data-danger-site]")).toBeHidden();
+
+  await page.getByLabel("Password").fill("lawngames");
+  await page.getByRole("button", { name: "Proceed" }).click();
+
+  await expect(page.locator("[data-concept-gate]")).toBeHidden();
+  await expect(page.getByRole("heading", { name: "So fun it’s dangerous." })).toBeVisible();
+});
+
 test("mobile booking form sends the complete request in one step", async ({ page }) => {
   await page.goto(baseURL);
 
@@ -106,6 +118,9 @@ for (const width of [320, 360, 390]) {
   for (const path of ["/", "/blog/", "/blog/wedding-lawn-games-guide/", "/dangerous-lawn-games/"]) {
     test(`${path} keeps visible content inside a ${width}px viewport`, async ({ page }) => {
       await page.setViewportSize({ width, height: 760 });
+      if (path === "/dangerous-lawn-games/") {
+        await page.addInitScript(() => sessionStorage.setItem("dangerous-preview", "unlocked"));
+      }
       await page.goto(`${baseURL}${path}`);
       await page.waitForTimeout(800);
 
