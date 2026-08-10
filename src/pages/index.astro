@@ -98,6 +98,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
           novalidate
         >
           <input type="hidden" name="form-name" value="booking-inquiry" />
+          <input type="hidden" name="subject" value="New Popstar Lawn Games inquiry" />
           <p class="form-honeypot" aria-hidden="true">
             <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
           </p>
@@ -159,9 +160,13 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             <span>Email</span>
             <input type="email" name="email" autocomplete="email" required />
           </label>
-          <label>
-            <span>Phone <small>optional</small></span>
-            <input type="tel" name="phone" autocomplete="tel" />
+          <label class="message-field">
+            <span>Event notes <small>optional</small></span>
+            <textarea
+              name="message"
+              rows="3"
+              placeholder="Venue, guest count, questions, or anything else we should know"
+            ></textarea>
           </label>
           <button class="button button-accent" id="booking-submit" type="submit">Request availability</button>
           <p class="form-message" id="availability-message" aria-live="polite"></p>

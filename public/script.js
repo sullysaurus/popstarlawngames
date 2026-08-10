@@ -124,11 +124,11 @@ availabilityForm.addEventListener("submit", async (event) => {
     const body = encodeURIComponent([
       `Name: ${String(payload.name)}`,
       `Email: ${String(payload.email)}`,
-      `Phone: ${String(payload.phone || "Not provided")}`,
       `Package: ${String(payload.package)}`,
       `Event date: ${String(payload.eventDate || "Not selected")}`,
       `Delivery ZIP: ${String(payload.deliveryZip || "Not provided")}`,
       `Event type: ${String(payload.eventType || "Not selected")}`,
+      `Event notes: ${String(payload.message || "Not provided")}`,
       "",
       "Please send availability and a complete quote.",
     ].join("\n"));
