@@ -91,6 +91,6 @@ If rain is possible, identify which games can move indoors and where they will g
 
 Buying can make sense when you want one game for repeated family use. Renting makes more sense when you need several large games for one date, have limited transport or storage, or want the setup to look consistent in a polished event space.
 
-A full-service rental should spell out what is included: delivery area, setup, pickup, rental window, surface requirements, and any damage terms. Popstar packages include delivery, styled setup, instructions, and pickup, so hosts do not spend the morning hauling giant pieces across town.
+A full-service rental should spell out what is included: delivery area, setup, pickup, rental window, surface requirements, and any damage terms. Popstar quotes delivery, setup, and pickup for the venue and timing so hosts know the complete event cost before the date is confirmed.
 
 Ready to choose a mix? See our [premium lawn game rental packages](/#packages) or [request your event date](/#availability).

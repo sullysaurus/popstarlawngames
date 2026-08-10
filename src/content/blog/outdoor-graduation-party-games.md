@@ -71,6 +71,6 @@ Have the games ready before the first arrival. Open play is especially useful at
 
 Pause for any welcome, meal announcement, slideshow, or toast. Later, invite guests back for one short featured match or keep the stations open without commentary. Near the end of the party, collect loose accessories and make sure the pickup path remains clear.
 
-Popstar event-day rentals include delivery, styled setup, and pickup for up to eight consecutive guest-ready hours. That works well for open-house timing because the host does not need to assemble or return large games.
+Popstar can coordinate delivery, setup, and pickup around the venue and timing. That works well for open-house timing because the host does not need to assemble or return large games.
 
-The Social Set includes three games from $299, the Celebration Set includes five from $449, and the Headliner includes eight from $699. [Compare the packages](/#packages) or [request your graduation date](/#availability) for Raleigh, Durham, Chapel Hill, or a nearby Triangle community.
+The Social Set includes three games from $200, the Celebration Set includes five from $325, and the Headliner includes all six current games from $395. [Compare the packages](/#packages) or [request your graduation date](/#availability) for Raleigh, Durham, Chapel Hill, or a nearby Triangle community.

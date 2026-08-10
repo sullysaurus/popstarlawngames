@@ -68,11 +68,12 @@ For a game-centered reception or a structured competition, capacity changes. Tea
 
 Popstar's three event-day rental sets provide useful starting points:
 
-- **The Social Set — $299:** three games, suited to smaller gatherings or a focused cocktail-hour setup.
-- **The Celebration Set — $449:** five games, a strong fit for many 75- to 150-person weddings.
-- **The Headliner — $699:** eight games for larger lawns, longer events, or a more game-forward plan.
+- **The Social Set — $200:** three games, suited to smaller gatherings or a focused cocktail-hour setup.
+- **The Celebration Set — $325:** five games, a strong fit for many 75- to 150-person weddings.
+- **The Headliner — $395:** all six current games for larger lawns, longer events, or a more game-forward plan.
+- **The Large Event Set — from $450:** 10 or more play stations for bigger guest lists and faster rotation.
 
-Each set includes delivery, styled setup, simple instructions, and pickup, with up to eight consecutive guest-ready hours. There is no guest minimum. The package is only one part of the decision; the final mix should fit the venue and backup location.
+Delivery, setup, and pickup are quoted for the venue and timing. There is no guest minimum. The package is only one part of the decision; the final mix should fit the venue and backup location.
 
 ## Use this decision sequence
 

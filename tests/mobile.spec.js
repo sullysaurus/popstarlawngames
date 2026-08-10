@@ -28,6 +28,14 @@ test("package cards send customers into direct online booking", async ({ page })
   await expect(page.locator("#custom-inquiry")).not.toHaveAttribute("open", "");
 });
 
+test("large event option opens the inquiry with the package selected", async ({ page }) => {
+  await page.goto(baseURL);
+  await page.locator('[data-inquiry-package="The Large Event Set"]').click();
+  await expect(page.locator("#custom-inquiry")).toHaveAttribute("open", "");
+  await expect(page.locator("#event-package")).toHaveValue("The Large Event Set");
+  await expect(page.locator(".capacity-price")).toContainText("$450");
+});
+
 test("date request explains missing required details", async ({ page }) => {
   await page.goto(baseURL);
   await page.locator("#custom-inquiry summary").click();

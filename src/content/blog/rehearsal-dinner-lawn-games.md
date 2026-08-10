@@ -77,6 +77,6 @@ If the dinner has its own color palette, repeat one accent rather than personali
 
 Three games suit many rehearsal dinners with up to about 75 guests. A five-game setup adds useful variety for a larger welcome party or a longer open-house format. Adjust downward when the activity area is compact or the evening includes several speeches and a formal meal.
 
-Popstar's Social Set starts at $299 for three games. The Celebration Set starts at $449 for five games and includes a custom sign. Both include delivery, styled setup, and pickup.
+Popstar's Social Set starts at $200 for three games. The Celebration Set starts at $325 for five games. Delivery, setup, and pickup are quoted for the venue and timing.
 
 For wedding-day planning, see the [complete guide to wedding lawn games](/blog/wedding-lawn-games-guide/). For the rehearsal dinner or welcome party, [request your date](/#availability) and share both the venue and guest timeline so we can recommend the right setup.

@@ -10,9 +10,9 @@ imageAlt: "Three premium lawn games arranged as a coordinated event rental set"
 readingTime: "7 minute read"
 ---
 
-Lawn game rental cost depends on the number and size of games, whether you pick them up or have them delivered, the event location, rental length, setup requirements, and any custom styling or staffing. At Popstar Lawn Games, full-service event-day packages currently start at **$299 for three games**, **$449 for five games**, and **$699 for eight games**.
+Lawn game rental cost depends on the number and size of games, whether you pick them up or have them delivered, the event location, rental length, setup requirements, and any custom styling or staffing. At Popstar Lawn Games, event-day game packages currently start at **$200 for three games**, **$325 for five games**, and **$395 for all six current games**. A high-capacity Large Event Set starts at **$450 for 10 or more play stations**.
 
-Those prices include delivery, styled setup, simple instructions, and pickup for events in the service area. Comparing only the number of games can be misleading if another quote requires the host to transport and assemble everything.
+Those prices cover the games. Delivery, setup, and pickup are quoted for the venue and timing. Comparing only the number of games can be misleading when the number of simultaneous play stations and service requirements differ.
 
 ## What changes a lawn game rental quote?
 
@@ -40,9 +40,9 @@ Popstar packages are designed as full-service event rentals. Delivery, a coordin
 
 | Package | Games | Starting price | Best fit |
 | --- | ---: | ---: | --- |
-| Social Set | 3 | $299 | Smaller parties and focused cocktail hours |
-| Celebration Set | 5 | $449 | Weddings, company parties, and larger backyards |
-| Headliner | 8 | $699 | Large lawns and game-forward celebrations |
+| Social Set | 3 | $200 | Smaller parties and focused cocktail hours |
+| Celebration Set | 5 | $325 | Weddings, company parties, and larger backyards |
+| Headliner | 6 | $395 | Large lawns and game-forward celebrations |
 
 Event-day rentals include up to eight consecutive guest-ready hours, and there is no guest minimum. The Celebration and Headliner sets provide more variety, but the Social Set can be the better value when space or timing supports only three active stations.
 

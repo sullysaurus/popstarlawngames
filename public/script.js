@@ -70,6 +70,9 @@ if (window.location.hash === "#custom-inquiry") {
 document.querySelectorAll('a[href="#custom-inquiry"]').forEach((link) => {
   link.addEventListener("click", () => {
     customInquiry.open = true;
+    if (link instanceof HTMLElement && link.dataset.inquiryPackage) {
+      eventPackage.value = link.dataset.inquiryPackage;
+    }
   });
 });
 

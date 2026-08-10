@@ -49,7 +49,7 @@ For a typical 60- to 90-minute cocktail hour, use this as a planning range:
 
 These are starting points, not rules. Choose fewer games when guests also have a photo booth, live music, several bars, or a large lounge area. Choose more when the lawn is a featured part of the experience or when cocktail hour may run longer.
 
-Popstar's [Social Set](/#packages) includes three classics for smaller gatherings. The five-game Celebration Set is a natural fit when you want more variety, while the eight-game Headliner suits a large lawn or a game-forward reception.
+Popstar's [Social Set](/#packages) includes three classics for smaller gatherings. The five-game Celebration Set is a natural fit when you want more variety, while the six-game Headliner suits a large lawn or a game-forward reception.
 
 ## Plan the layout and timing together
 

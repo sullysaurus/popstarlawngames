@@ -81,6 +81,6 @@ Put the most recognizable game where arriving guests can see it. Visible play gi
 
 Buying one favorite game makes sense for frequent family use. Renting is useful when you want several large games for one event, need a coordinated look, or do not have the vehicle and storage space to manage them.
 
-Popstar's Social Set includes three games from $299, the Celebration Set includes five from $449, and the Headliner includes eight from $699. Each includes delivery, styled setup, and pickup for up to eight consecutive guest-ready hours.
+Popstar's Social Set includes three games from $200, the Celebration Set includes five from $325, and the Headliner includes all six current games from $395. Delivery, setup, and pickup are quoted for the venue and timing.
 
 Compare the [rental sets](/#packages), or [request your date](/#availability) for a backyard party in Raleigh, Durham, Chapel Hill, or a nearby Triangle community.

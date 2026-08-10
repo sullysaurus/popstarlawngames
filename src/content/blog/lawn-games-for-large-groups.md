@@ -71,7 +71,7 @@ Choose a **hosted format** when the planner cannot manage rotations while runnin
 
 ## Plan the package around capacity
 
-Popstar's Celebration Set includes five games from $449, which works well for many medium-to-large open-play events. The Headliner includes eight games from $699 for a larger lawn or a more prominent activity zone. Both include delivery, styled setup, instructions, and pickup for up to eight consecutive guest-ready hours.
+Popstar's Celebration Set includes five games from $325, which works well for many medium-to-large open-play events. The Headliner includes six games from $395 for a larger lawn or a more prominent activity zone. For bigger crowds, the Large Event Set starts at $450 for 10 or more simultaneous play stations. Delivery, setup, and pickup are quoted for the venue and timing.
 
 Package count is not a substitute for a site plan. Eight games cannot serve the event well if only five stations fit safely. Share the location, guest count, surface, access window, and weather backup before finalizing.
 

@@ -207,6 +207,12 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outl
 .package-footer strong { font-family: var(--serif); font-size: 2.2rem; }
 .circle-button { display: grid; place-items: center; width: 54px; aspect-ratio: 1; border: var(--border); border-radius: 50%; background: var(--paper); font-size: 1.5rem; cursor: pointer; transition: transform .2s ease; }
 .circle-button:hover { transform: rotate(15deg) scale(1.06); }
+.capacity-upgrade { display: grid; grid-template-columns: minmax(0, 1fr) auto auto; gap: 2rem; align-items: center; margin-top: 2rem; padding: 1.5rem; background: var(--paper); border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
+.capacity-upgrade h3 { margin: .15rem 0 .4rem; font-family: var(--serif); font-size: clamp(2rem, 3vw, 3.2rem); line-height: .95; }
+.capacity-upgrade p { max-width: 720px; margin-block: 0; }
+.capacity-price small { display: block; font-size: .7rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+.capacity-price strong { font-family: var(--serif); font-size: 2.2rem; }
+.capacity-upgrade .button { white-space: nowrap; }
 .package-note { max-width: 820px; margin: 2rem 0 0; padding: 1rem 1.2rem; background: var(--paper); border: var(--border); font-size: .9rem; font-weight: 700; }
 
 .marquee { overflow: hidden; padding: 1.1rem 0; border-block: var(--border); background: var(--ink); color: white; }
@@ -372,6 +378,8 @@ footer > p { max-width: 460px; margin: 0; }
   .hero-stage { min-height: 640px; }
   .availability-form { grid-template-columns: 1fr 1fr; }
   .package-grid { grid-template-columns: 1fr; }
+  .capacity-upgrade { grid-template-columns: minmax(0, 1fr) auto; }
+  .capacity-upgrade .button { grid-column: 1 / -1; justify-self: start; }
   .game-grid { grid-template-columns: 1fr 1fr; }
   .package-card { display: grid; grid-template-columns: .85fr 1.15fr; }
   .package-art { height: 100%; min-height: 420px; border-bottom: 0; border-right: var(--border); }
@@ -419,6 +427,8 @@ footer > p { max-width: 460px; margin: 0; }
   .section { padding-inline: 5vw; }
   .section-heading { align-items: start; flex-direction: column; }
   .package-card { display: flex; }
+  .capacity-upgrade { grid-template-columns: 1fr; gap: 1rem; }
+  .capacity-upgrade .button { grid-column: auto; width: 100%; }
   .game-grid { grid-template-columns: 1fr; }
   .game-card { min-height: 215px; }
   .game-card > img { height: clamp(190px, 58vw, 245px); }
