@@ -213,10 +213,12 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outl
 .marquee div { display: flex; gap: 2rem; width: max-content; animation: marquee 22s linear infinite; font-family: var(--serif); font-size: 2.1rem; font-weight: 800; }
 .marquee i { color: var(--yellow); font-style: normal; }
 
-.games { background: var(--paper); }
+.games { scroll-margin-top: 86px; padding-block: clamp(4rem, 6vw, 7rem); background: var(--paper); }
+.games .section-heading { margin-bottom: clamp(2rem, 3vw, 3rem); }
+.games .section-heading h2 { max-width: 8.5ch; font-size: clamp(3.2rem, 6vw, 6.5rem); }
 .game-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1.1rem; }
 .game-card { position: relative; min-height: 245px; padding: 0 1.6rem 1.6rem; overflow: hidden; border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
-.game-card > img { width: calc(100% + 3.2rem); max-width: none; aspect-ratio: 4 / 3; margin-left: -1.6rem; object-fit: cover; border-bottom: var(--border); }
+.game-card > img { display: block; width: calc(100% + 3.2rem); max-width: none; height: clamp(190px, 18vw, 280px); margin-left: -1.6rem; object-fit: cover; border-bottom: var(--border); }
 .game-card h3 { max-width: 10ch; margin: 1.35rem 0 .8rem; font-family: var(--serif); font-size: clamp(2rem, 3.2vw, 3.4rem); line-height: .92; }
 .game-card p { max-width: 31ch; margin: 0; }
 .game-number { position: absolute; top: 1rem; right: 1rem; display: grid; place-items: center; width: 36px; height: 36px; color: var(--ink); background: var(--paper); border: var(--border); border-radius: 50%; font-size: .7rem; font-weight: 800; letter-spacing: .06em; }
@@ -420,6 +422,7 @@ footer > p { max-width: 460px; margin: 0; }
   .package-card { display: flex; }
   .game-grid { grid-template-columns: 1fr; }
   .game-card { min-height: 215px; }
+  .game-card > img { height: clamp(190px, 58vw, 245px); }
   .games-footer { align-items: flex-start; flex-direction: column; }
   .popular-tag { right: .75rem; top: .75rem; transform: none; }
   .package-art { min-height: 235px; border-right: 0; border-bottom: var(--border); }
