@@ -29,6 +29,7 @@ export async function GET() {
 
   const urls = [
     { loc: `${siteUrl}/`, lastmod: "2026-08-10" },
+    { loc: `${siteUrl}/rentals/`, lastmod: "2026-08-10" },
     { loc: `${siteUrl}/blog/`, lastmod: formatDate(latestPostDate) },
     ...posts.map((post) => ({
       loc: `${siteUrl}/blog/${post.id}/`,

@@ -41,13 +41,13 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
         <span>Popstar<br />Lawn Games</span>
       </a>
       <nav aria-label="Primary navigation">
-        <a href="#packages">Rentals</a>
-        <a href="#games">Games</a>
+        <a href="#packages">Packages</a>
+        <a href="/rentals/">Book games</a>
         <a href="#occasions">Occasions</a>
         <a href="#how-it-works">How it works</a>
         <a href="/blog/">Playbook</a>
       </nav>
-      <a class="button button-small button-dark" href="#availability">Request your date</a>
+      <a class="button button-small button-dark" href="/rentals/">Check availability</a>
     </header>
 
     <main id="top">
@@ -325,7 +325,10 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
         </div>
         <div class="games-footer">
           <p>Not sure what fits your event?</p>
-          <a class="button button-dark" href="#availability">Ask for a game recommendation</a>
+          <div class="games-footer-actions">
+            <a class="button button-primary" href="/rentals/">See live availability</a>
+            <a class="button button-dark" href="#availability">Ask for a recommendation</a>
+          </div>
         </div>
       </section>
 
@@ -396,6 +399,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
       <p>Curated event rentals for Raleigh, Durham, Chapel Hill and the surrounding Triangle.</p>
       <div class="footer-links">
         <a href="#availability">Concierge booking</a>
+        <a href="/rentals/">Book individual games</a>
         <a href="/blog/">The Playbook</a>
         <a href="#availability">Book your event</a>
       </div>

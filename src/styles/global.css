@@ -217,6 +217,26 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outl
 .game-card-cream { background: var(--cream); }
 .games-footer { display: flex; align-items: center; justify-content: space-between; gap: 1.5rem; margin-top: 2rem; padding-top: 2rem; border-top: var(--border); }
 .games-footer p { margin: 0; font-family: var(--serif); font-size: 1.55rem; font-weight: 800; }
+.games-footer-actions { display: flex; flex-wrap: wrap; gap: .75rem; }
+
+.rental-hero { display: grid; grid-template-columns: 1.2fr .8fr; gap: 6vw; align-items: end; padding: clamp(5rem, 9vw, 9rem) 5vw; background: var(--paper); border-bottom: var(--border); }
+.rental-hero h1 { max-width: 980px; margin: 0; font-family: var(--serif); font-size: clamp(4rem, 9vw, 9rem); line-height: .86; letter-spacing: -.055em; }
+.rental-hero h1 em { color: var(--blue); }
+.rental-hero-copy { max-width: 560px; padding-bottom: .6rem; font-size: 1.12rem; }
+.rental-hero-copy p { margin: 0 0 1.5rem; }
+.booking-shell { padding: clamp(4rem, 8vw, 8rem) 5vw; background: var(--cream); }
+.booking-intro { display: grid; grid-template-columns: 1fr 1fr; gap: 2rem 6vw; align-items: end; margin-bottom: 2rem; }
+.booking-intro .eyebrow { grid-column: 1 / -1; margin-bottom: -1rem; }
+.booking-intro h2 { margin: 0; font-family: var(--serif); font-size: clamp(3.2rem, 7vw, 7rem); line-height: .9; letter-spacing: -.045em; }
+.booking-intro > p:last-child { max-width: 480px; margin: 0; font-size: 1.05rem; }
+.booqable-date-wrap, .booqable-catalog { min-width: 0; background: white; border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
+.booqable-date-wrap { position: relative; z-index: 2; padding: 1.25rem; margin-bottom: 1.5rem; }
+.booqable-catalog { padding: clamp(1rem, 3vw, 2rem); overflow-x: hidden; }
+.booking-note { display: grid; grid-template-columns: auto 1fr; gap: .6rem; margin-top: 1.5rem; padding: 1.1rem 1.25rem; background: var(--yellow); border: var(--border); }
+.rental-concierge { display: grid; grid-template-columns: 1.1fr .7fr auto; gap: 3rem; align-items: center; padding: clamp(4rem, 7vw, 7rem) 5vw; color: white; background: var(--blue); border-top: var(--border); }
+.rental-concierge h2 { margin: 0; font-family: var(--serif); font-size: clamp(3rem, 6vw, 6rem); line-height: .9; }
+.rental-concierge > p { max-width: 520px; margin: 0; font-size: 1.05rem; }
+.rental-concierge .button { white-space: nowrap; }
 
 .occasions { display: grid; grid-template-columns: .85fr 1.15fr; gap: 8vw; background: var(--paper); }
 .occasion-copy { position: sticky; top: 140px; align-self: start; }
@@ -352,12 +372,18 @@ footer > p { max-width: 460px; margin: 0; }
   .article-grid { grid-template-columns: 1fr 1fr; }
   .post-shell { grid-template-columns: minmax(0, 1fr); }
   .post-aside, .post-cta { position: static; }
+  .rental-hero, .rental-concierge { grid-template-columns: 1fr; }
+  .rental-concierge { gap: 1.5rem; }
 }
 
 @media (max-width: 680px) {
   body { font-size: 15px; }
   .announcement { justify-content: space-between; gap: .7rem; min-height: 32px; font-size: .6rem; }
   .site-header { gap: .65rem; padding: .65rem 4vw; }
+  .games-footer, .booking-intro, .booking-note { grid-template-columns: 1fr; flex-direction: column; align-items: stretch; }
+  .games-footer-actions { flex-direction: column; }
+  .games-footer-actions .button { width: 100%; }
+  .rental-hero { gap: 2rem; }
   .site-header > .button { display: inline-flex; min-height: 42px; padding: .55rem .8rem; font-size: .72rem; }
   .brand { gap: .45rem; font-size: .7rem; }
   .brand-mark { width: 40px; }
