@@ -35,7 +35,10 @@ const socialImage = Astro.site ? new URL(image, Astro.site) : image;
     <title>{title}</title>
     <meta name="description" content={description} />
     {noindex && <meta name="robots" content="noindex, nofollow, noarchive" />}
-    <link rel="icon" type="image/png" href="/assets/popstar-mark.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#ff5d47" />
     {canonical && <link rel="canonical" href={canonical} />}
     <meta property="og:type" content={type} />
     <meta property="og:site_name" content="Popstar Lawn Games" />
