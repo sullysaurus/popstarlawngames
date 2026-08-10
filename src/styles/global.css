@@ -241,8 +241,7 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outl
 .booking-intro .eyebrow { grid-column: 1 / -1; margin-bottom: -1rem; }
 .booking-intro h2 { margin: 0; font-family: var(--serif); font-size: clamp(3.2rem, 7vw, 7rem); line-height: .9; letter-spacing: -.045em; }
 .booking-intro > p:last-child { max-width: 480px; margin: 0; font-size: 1.05rem; }
-.booqable-date-wrap, .booqable-catalog { min-width: 0; background: white; border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
-.booqable-date-wrap { position: relative; z-index: 2; padding: 1.25rem; margin-bottom: 1.5rem; }
+.booqable-catalog { min-width: 0; background: white; border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
 .booqable-catalog { padding: clamp(1rem, 3vw, 2rem); overflow-x: hidden; }
 .booking-note { display: grid; grid-template-columns: auto 1fr; gap: .6rem; margin-top: 1.5rem; padding: 1.1rem 1.25rem; background: var(--yellow); border: var(--border); }
 .rental-concierge { display: grid; grid-template-columns: 1.1fr .7fr auto; gap: 3rem; align-items: center; padding: clamp(4rem, 7vw, 7rem) 5vw; color: white; background: var(--blue); border-top: var(--border); }
