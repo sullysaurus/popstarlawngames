@@ -20,6 +20,7 @@ jobs:
     env:
       SEO_DASHBOARD_ENDPOINT: ${{ vars.SEO_DASHBOARD_ENDPOINT }}
       SEO_DASHBOARD_INGEST_TOKEN: ${{ secrets.SEO_DASHBOARD_INGEST_TOKEN }}
+      NETLIFY_BUILD_HOOK_URL: ${{ secrets.NETLIFY_BUILD_HOOK_URL }}
     steps:
       - uses: actions/checkout@v4
       - uses: actions/setup-node@v4
@@ -50,6 +51,9 @@ jobs:
           --header "Content-Type: application/json"
           --data-binary @reports/seo-dashboard/data.json
           "${SEO_DASHBOARD_ENDPOINT}"
+      - name: Publish scheduled website content
+        if: ${{ env.NETLIFY_BUILD_HOOK_URL != '' }}
+        run: curl --fail --silent --show-error --request POST "${NETLIFY_BUILD_HOOK_URL}"
       - name: Upload private dashboard
         if: ${{ github.event.repository.private || vars.SEO_ALLOW_PUBLIC_REPORTS == 'true' }}
         uses: actions/upload-artifact@v4
@@ -61,4 +65,4 @@ jobs:
         run: |
           echo "## Popstar SEO report" >> "$GITHUB_STEP_SUMMARY"
           echo "The nightly run completed. Detailed metrics are only uploaded when the repository is private or SEO_ALLOW_PUBLIC_REPORTS is true." >> "$GITHUB_STEP_SUMMARY"
-          echo "No content was auto-published." >> "$GITHUB_STEP_SUMMARY"
+          echo "Future-dated articles are deployed only after their publication date is reached." >> "$GITHUB_STEP_SUMMARY"

@@ -5,14 +5,20 @@ import SiteHeader from "../../components/SiteHeader.astro";
 import SiteFooter from "../../components/SiteFooter.astro";
 
 export async function getStaticPaths() {
-  const posts = await getCollection("blog");
+  const buildTime = new Date();
+  const posts = (await getCollection("blog")).filter(
+    (post) => post.data.publishedDate.valueOf() <= buildTime.valueOf(),
+  );
   return posts.map((post) => ({ params: { id: post.id }, props: { post } }));
 }
 
 interface Props { post: CollectionEntry<"blog">; }
 const { post } = Astro.props;
 const { Content } = await render(post);
-const allPosts = await getCollection("blog");
+const buildTime = new Date();
+const allPosts = (await getCollection("blog")).filter(
+  (item) => item.data.publishedDate.valueOf() <= buildTime.valueOf(),
+);
 const related = allPosts.filter((item) => item.id !== post.id).slice(0, 2);
 const formatDate = (date: Date) => date.toLocaleDateString("en-US", { month: "long", day: "numeric", year: "numeric" });
 
