@@ -32,7 +32,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
   <body>
     <div class="announcement">
       <p>Now booking the Triangle</p>
-      <a href="#availability">Request your date <span aria-hidden="true">↗</span></a>
+      <a href="/rentals/">Book games online <span aria-hidden="true">↗</span></a>
     </div>
 
     <header class="site-header">
@@ -60,8 +60,8 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             mingle, laugh, and stay a little longer.
           </p>
           <div class="hero-actions">
-            <a class="button button-primary" href="#availability">Build your party</a>
-            <a class="text-link" href="#packages">See the rentals <span aria-hidden="true">↓</span></a>
+            <a class="button button-primary" href="/rentals/">Check dates &amp; book</a>
+            <a class="text-link" href="#games">See every game <span aria-hidden="true">↓</span></a>
           </div>
           <div class="proof-row" aria-label="Service benefits">
             <span>★★★★★ 5-star service</span>
@@ -83,10 +83,16 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
 
       <section class="availability-wrap" id="availability">
         <div class="availability-intro">
-          <p class="eyebrow">A quick availability request</p>
-          <h2>Tell us when and where.</h2>
-          <p>We’ll personally confirm the games and delivery window before you pay anything.</p>
+          <p class="eyebrow">Book without the back-and-forth</p>
+          <h2>See what’s free. Reserve it online.</h2>
+          <p>Choose your dates, add games to your cart, and complete checkout right here on the site.</p>
+          <a class="button button-dark" href="/rentals/">Start booking</a>
         </div>
+        <details class="custom-inquiry" id="custom-inquiry">
+          <summary>
+            <span><strong>Planning something custom?</strong> Weddings, company events, and unusual venues can use the short form.</span>
+            <span aria-hidden="true">+</span>
+          </summary>
         <form
           class="availability-form"
           id="availability-form"
@@ -146,9 +152,9 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             <span>Rental set</span>
             <select id="event-package" name="package" required>
               <option value="">Choose one</option>
-              <option value="The Social Set">The Social Set — from $299</option>
-              <option value="The Celebration Set">The Celebration Set — from $449</option>
-              <option value="The Headliner">The Headliner — from $699</option>
+              <option value="The Social Set">The Social Set — 3 games</option>
+              <option value="The Celebration Set">The Celebration Set — 5 games</option>
+              <option value="The Headliner">The Headliner — all 6 games</option>
               <option value="Hosted company event">Hosted company event — from $2,500</option>
               <option value="Not sure">Not sure — recommend one</option>
             </select>
@@ -172,6 +178,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
           <button class="button button-accent" id="booking-submit" type="submit">Request availability</button>
           <p class="form-message" id="availability-message" aria-live="polite"></p>
         </form>
+        </details>
       </section>
 
       <section class="packages section" id="packages">
@@ -181,8 +188,8 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             <h2>Pick your kind of fun.</h2>
           </div>
           <p>
-            Every package includes delivery, a polished setup, simple instructions, and pickup
-            after the party.
+            Start with a ready-made game mix, or book any game individually. Delivery and setup
+            are handled separately based on your venue.
           </p>
         </div>
 
@@ -201,14 +208,12 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
               <p>Cornhole, giant tower and four-in-a-row. Three classics, zero awkward mingling.</p>
               <ul>
                 <li>Cornhole, giant tower + four-in-a-row</li>
-                <li>Event-day rental · up to 8 hours</li>
-                <li>Delivery, styled setup + pickup</li>
+                <li>Event-day game rental</li>
+                <li>Delivery + setup available</li>
               </ul>
               <div class="package-footer">
-                <p><small>From</small><strong>$299</strong></p>
-                <button class="circle-button package-select" data-package="The Social Set" data-price="$299">
-                  <span class="sr-only">Select The Social Set</span>↗
-                </button>
+                <p><small>Games</small><strong>$200</strong></p>
+                <a class="circle-button" href="/rentals/" aria-label="Book The Social Set">↗</a>
               </div>
             </div>
           </article>
@@ -225,17 +230,15 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             <div class="package-content">
               <p class="package-kicker">More games, more staying power</p>
               <h3>The Celebration Set</h3>
-              <p>A styled five-game lounge built for cocktail hours, company parties and big backyards.</p>
+              <p>A five-game lineup built for cocktail hours, company parties and big backyards.</p>
               <ul>
-                <li>5 premium games of your choice</li>
-                <li>Event-day rental · up to 8 hours</li>
-                <li>Custom sign, delivery + styled setup</li>
+                <li>Cornhole, giant tower + four-in-a-row</li>
+                <li>Putterball + ring toss</li>
+                <li>Delivery + setup available</li>
               </ul>
               <div class="package-footer">
-                <p><small>From</small><strong>$449</strong></p>
-                <button class="circle-button package-select" data-package="The Celebration Set" data-price="$449">
-                  <span class="sr-only">Select The Celebration Set</span>↗
-                </button>
+                <p><small>Games</small><strong>$335</strong></p>
+                <a class="circle-button" href="/rentals/" aria-label="Book The Celebration Set">↗</a>
               </div>
             </div>
           </article>
@@ -253,22 +256,20 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
               <h3>The Headliner</h3>
               <p>Our biggest styled game collection for weddings, fundraisers and full-scale celebrations.</p>
               <ul>
-                <li>8 premium games of your choice</li>
-                <li>Event-day rental · up to 8 hours</li>
-                <li>Custom sign + priority styled setup</li>
+                <li>All 6 games in the current collection</li>
+                <li>Event-day game rental</li>
+                <li>Delivery + priority setup available</li>
               </ul>
               <div class="package-footer">
-                <p><small>From</small><strong>$699</strong></p>
-                <button class="circle-button package-select" data-package="The Headliner" data-price="$699">
-                  <span class="sr-only">Select The Headliner</span>↗
-                </button>
+                <p><small>Games</small><strong>$360</strong></p>
+                <a class="circle-button" href="/rentals/" aria-label="Book The Headliner">↗</a>
               </div>
             </div>
           </article>
         </div>
         <p class="package-note">
-          No guest minimums. Event-day rentals include up to eight consecutive guest-ready hours;
-          delivery and setup happen before, with pickup after. After-midnight and next-day pickup are quoted separately.
+          Package prices shown are the current game totals. Delivery, setup, after-midnight pickup,
+          and next-day pickup vary by venue and timing.
           Need a hosted company tournament or field day? Custom event production starts at $2,500.
         </p>
       </section>
@@ -287,47 +288,54 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             <h2 id="games-title">See what’s ready to play.</h2>
           </div>
           <p>
-            Six guest-friendly games, selected for easy drop-in play. Choose a set above and
-            we’ll help match the mix to your crowd and space.
+            Six guest-friendly games, selected for easy drop-in play. Pick your date and reserve
+            any available game online.
           </p>
         </div>
         <div class="game-grid">
           <article class="game-card game-card-yellow">
+            <img src="/assets/games/cornhole.jpg" alt="Representative cornhole rental set arranged on an event lawn" width="1200" height="1200" loading="lazy" />
             <span class="game-number">01</span>
             <h3>Cornhole</h3>
             <p>The two-board bag toss classic that works for nearly every crowd.</p>
           </article>
           <article class="game-card game-card-coral">
+            <img src="/assets/games/giant-tower.jpg" alt="Representative giant tumbling tower arranged on an event lawn" width="1200" height="1200" loading="lazy" />
             <span class="game-number">02</span>
             <h3>Giant Tower</h3>
             <p>Oversized stacking, steady hands, and a finale everyone stops to watch.</p>
           </article>
           <article class="game-card game-card-blue">
+            <img src="/assets/games/four-in-a-row.jpg" alt="Representative giant four-in-a-row game arranged on an event lawn" width="1200" height="1200" loading="lazy" />
             <span class="game-number">03</span>
             <h3>Four-in-a-Row</h3>
             <p>Fast, familiar two-player strategy in a much more photogenic format.</p>
           </article>
           <article class="game-card game-card-cream">
+            <img src="/assets/games/putterball.jpg" alt="Representative portable putting game arranged on an event lawn" width="1200" height="1200" loading="lazy" />
             <span class="game-number">04</span>
             <h3>Putterball</h3>
             <p>A putting challenge that gives golfers and first-timers an equal shot.</p>
           </article>
           <article class="game-card game-card-yellow">
+            <img src="/assets/games/ring-toss.jpg" alt="Representative wooden ring toss game arranged on an event lawn" width="1200" height="1200" loading="lazy" />
             <span class="game-number">05</span>
             <h3>Ring Toss</h3>
             <p>A compact, quick-play classic for patios, lawns, and smaller spaces.</p>
           </article>
           <article class="game-card game-card-coral">
+            <img src="/assets/games/yard-dice.jpg" alt="Representative oversized wooden yard dice arranged on an event lawn" width="1200" height="1200" loading="lazy" />
             <span class="game-number">06</span>
             <h3>Yard Dice</h3>
             <p>Oversized dice for casual rounds, team play, and all-ages competition.</p>
           </article>
         </div>
+        <p class="catalog-photo-note">Representative catalog photography; the finish and color of the delivered games may vary.</p>
         <div class="games-footer">
           <p>Not sure what fits your event?</p>
           <div class="games-footer-actions">
             <a class="button button-primary" href="/rentals/">See live availability</a>
-            <a class="button button-dark" href="#availability">Ask for a recommendation</a>
+            <a class="button button-dark" href="#custom-inquiry">Ask for a recommendation</a>
           </div>
         </div>
       </section>
@@ -340,7 +348,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
             Games give guests something to do with their hands and a reason to meet. That makes
             them just as useful at a polished brand activation as a backyard birthday.
           </p>
-          <a class="button button-dark" href="#availability">Plan your setup</a>
+          <a class="button button-dark" href="/rentals/">Check dates &amp; book</a>
         </div>
         <div class="occasion-list">
           <article><span>01</span><h3>Weddings</h3><p>Cocktail hours that actually mix.</p></article>
@@ -356,8 +364,8 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
           <p>You bring the people. Everything else happens in three refreshingly simple steps.</p>
         </div>
         <ol class="process-grid">
-          <li><span>1</span><h3>Choose your set</h3><p>Start with a package, then add games or custom details.</p></li>
-          <li><span>2</span><h3>Save your date</h3><p>Approve your tailored proposal, sign online and place a 30% deposit.</p></li>
+          <li><span>1</span><h3>Choose your dates</h3><p>See live availability for your event window.</p></li>
+          <li><span>2</span><h3>Add your games</h3><p>Build your lineup and complete checkout online.</p></li>
           <li><span>3</span><h3>Go have fun</h3><p>We deliver, style the setup and return after the event.</p></li>
         </ol>
       </section>
@@ -386,7 +394,7 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
       <section class="final-cta">
         <p class="eyebrow">Your date won’t plan itself</p>
         <h2>Let’s make it a<br /><em>play date.</em></h2>
-        <a class="button button-accent" href="#availability">Request your date</a>
+        <a class="button button-accent" href="/rentals/">Check dates &amp; book</a>
         <div class="cta-star" aria-hidden="true">★</div>
       </section>
     </main>
@@ -398,10 +406,10 @@ const bookingEmail = import.meta.env.PUBLIC_BOOKING_EMAIL ?? "hello@popstarlawng
       </a>
       <p>Curated event rentals for Raleigh, Durham, Chapel Hill and the surrounding Triangle.</p>
       <div class="footer-links">
-        <a href="#availability">Concierge booking</a>
-        <a href="/rentals/">Book individual games</a>
+        <a href="#custom-inquiry">Custom event help</a>
+        <a href="/rentals/">Book games online</a>
         <a href="/blog/">The Playbook</a>
-        <a href="#availability">Book your event</a>
+        <a href="/rentals/">Book your event</a>
       </div>
       <p class="copyright">© <span id="year"></span> Popstar Lawn Games</p>
     </footer>

@@ -61,13 +61,15 @@ eventZip.addEventListener("input", () => {
   eventZip.value = eventZip.value.replace(/\D/g, "").slice(0, 5);
 });
 
-/** @type {NodeListOf<HTMLButtonElement>} */
-const packageButtons = document.querySelectorAll(".package-select");
-packageButtons.forEach((button) => {
-  button.addEventListener("click", () => {
-    eventPackage.value = button.dataset.package ?? "";
-    query("#availability").scrollIntoView({ behavior: "smooth", block: "start" });
-    setTimeout(() => eventDate.focus({ preventScroll: true }), 500);
+const customInquiry = /** @type {HTMLDetailsElement} */ (query("#custom-inquiry"));
+
+if (window.location.hash === "#custom-inquiry") {
+  customInquiry.open = true;
+}
+
+document.querySelectorAll('a[href="#custom-inquiry"]').forEach((link) => {
+  link.addEventListener("click", () => {
+    customInquiry.open = true;
   });
 });
 

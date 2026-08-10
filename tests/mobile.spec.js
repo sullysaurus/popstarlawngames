@@ -9,6 +9,7 @@ test("mobile booking form sends the complete request in one step", async ({ page
   await page.goto(baseURL);
 
   await expect(page.locator(".site-header > .button")).toBeVisible();
+  await page.locator("#custom-inquiry summary").click();
   await page.locator("#event-date").fill("10/24/2026");
   await page.locator("#event-zip").fill("27601");
   await page.locator("#event-type").selectOption({ label: "Wedding" });
@@ -21,16 +22,15 @@ test("mobile booking form sends the complete request in one step", async ({ page
   await expect(page.locator("#booking-submit")).toBeEnabled();
 });
 
-test("package card preselects the same single booking form", async ({ page }) => {
+test("package cards send customers into direct online booking", async ({ page }) => {
   await page.goto(baseURL);
-  await page.locator('[data-package="The Headliner"]').click();
-  await expect(page.locator("#event-package")).toHaveValue("The Headliner");
-  await expect(page.locator("#availability-form")).toBeVisible();
-  await expect(page.locator("#booking-dialog")).toHaveCount(0);
+  await expect(page.locator('.package-card a[href="/rentals/"]')).toHaveCount(3);
+  await expect(page.locator("#custom-inquiry")).not.toHaveAttribute("open", "");
 });
 
 test("date request explains missing required details", async ({ page }) => {
   await page.goto(baseURL);
+  await page.locator("#custom-inquiry summary").click();
   await page.locator("#availability-form button").click();
   await expect(page.locator("#availability-message")).toContainText("Complete the required fields");
 });
@@ -38,6 +38,7 @@ test("date request explains missing required details", async ({ page }) => {
 test("event date field matches the other mobile inputs", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 760 });
   await page.goto(baseURL);
+  await page.locator("#custom-inquiry summary").click();
 
   const bounds = await page.locator("#event-date").evaluate((input) => {
     const inputRect = input.getBoundingClientRect();
