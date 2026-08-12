@@ -5,7 +5,7 @@ import os from "node:os";
 import path from "node:path";
 import { promisify } from "node:util";
 import test from "node:test";
-import { escapeHtml, scoreQueue } from "../scripts/seo-dashboard-lib.mjs";
+import { dailyKeywordBatch, escapeHtml, renderDashboard, scoreQueue } from "../scripts/seo-dashboard-lib.mjs";
 
 const exec = promisify(execFile);
 
@@ -29,4 +29,47 @@ test("dashboard fixture produces a responsive report and queue JSON", async () =
 
 test("dashboard HTML escaping prevents injected markup", () => {
   assert.equal(escapeHtml('<script>alert("x")</script>'), "&lt;script&gt;alert(&quot;x&quot;)&lt;/script&gt;");
+});
+
+test("keyword batches rotate through the full queue and wrap cleanly", () => {
+  const keywords = ["one", "two", "three", "four", "five"];
+  assert.deepEqual(dailyKeywordBatch(keywords, 2, new Date("1970-01-01T00:00:00Z")), ["one", "two"]);
+  assert.deepEqual(dailyKeywordBatch(keywords, 2, new Date("1970-01-02T00:00:00Z")), ["three", "four"]);
+  assert.deepEqual(dailyKeywordBatch(keywords, 2, new Date("1970-01-03T00:00:00Z")), ["five", "one"]);
+});
+
+test("connected Search Console has an accurate zero-query empty state", () => {
+  const html = renderDashboard({
+    generatedAt: "2026-08-12T00:00:00.000Z",
+    status: {ga4: {ok: true}, gsc: {ok: true}, keywords: {ok: true}},
+    ga4: {current: {}, previous: {}},
+    gsc: {totals: {}, previousTotals: {}, queries: []},
+    queue: [],
+  });
+  assert.match(html, /Search Console is connected\. No queries have impressions/);
+  assert.doesNotMatch(html, /Connect Search Console to see live queries/);
+});
+
+test("the scheduled article calendar has one unique post per day", async () => {
+  const blogDirectory = path.resolve(import.meta.dirname, "../src/content/blog");
+  const files = (await fs.readdir(blogDirectory)).filter((file) => file.endsWith(".md"));
+  const posts = await Promise.all(files.map(async (file) => {
+    const content = await fs.readFile(path.join(blogDirectory, file), "utf8");
+    return {
+      file,
+      date: content.match(/^publishedDate:\s*([^\n]+)/m)?.[1]?.trim(),
+      keyword: content.match(/^targetKeyword:\s*["']([^"']+)/m)?.[1]?.trim(),
+    };
+  }));
+  assert.equal(posts.length, 50);
+  assert.equal(new Set(posts.map((post) => post.keyword)).size, 50);
+  assert.equal(new Set(posts.map((post) => post.date)).size, 50);
+  const scheduledDates = posts.map((post) => post.date).filter((date) => date >= "2026-08-13").sort();
+  assert.equal(scheduledDates.length, 47);
+  assert.equal(scheduledDates[0], "2026-08-13");
+  assert.equal(scheduledDates.at(-1), "2026-09-28");
+  scheduledDates.forEach((date, index) => {
+    const expected = new Date(Date.UTC(2026, 7, 13 + index)).toISOString().slice(0, 10);
+    assert.equal(date, expected);
+  });
 });

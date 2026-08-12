@@ -1,0 +1,50 @@
+{
+  "collectedAt": "2026-08-12T21:25:00.000Z",
+  "country": "us",
+  "note": "Variants with the same intent share one target URL. They are not separate article briefs.",
+  "clusters": [
+    {
+      "owner": "/rentals/",
+      "intent": "general commercial rental",
+      "variants": ["lawn game rentals", "lawn games for rent", "yard game rentals", "party game rentals", "giant lawn game rentals", "event game rentals", "outdoor game rentals for parties", "renting yard games"]
+    },
+    {
+      "owner": "/wedding-lawn-game-rentals-raleigh-nc/",
+      "intent": "wedding rental",
+      "planned": true,
+      "variants": ["wedding lawn game rentals raleigh nc", "wedding lawn game rentals", "wedding lawn games rental", "rent lawn games for wedding", "wedding game rentals", "wedding games rental", "wedding lawn games hire"]
+    },
+    {
+      "owner": "/lawn-game-rentals-raleigh-nc/",
+      "intent": "local general rental",
+      "planned": true,
+      "variants": ["lawn game rentals raleigh nc", "raleigh lawn game rentals", "yard game rentals raleigh nc", "party game rentals raleigh nc", "cornhole rental raleigh", "lawn game rentals near me"]
+    },
+    {
+      "owner": "/corporate-event-lawn-games-raleigh/",
+      "intent": "corporate rental",
+      "planned": true,
+      "variants": ["corporate event lawn games raleigh", "corporate event game rentals", "company picnic game rentals", "outdoor team building games raleigh", "employee appreciation event games"]
+    },
+    {
+      "owner": "/blog/wedding-lawn-games-guide/",
+      "intent": "wedding ideas",
+      "variants": ["wedding lawn games", "wedding lawn game ideas", "outdoor wedding games", "wedding games", "lawn games wedding"]
+    },
+    {
+      "owner": "/blog/wedding-reception-games/",
+      "intent": "reception activities",
+      "variants": ["wedding reception games", "outdoor wedding reception games", "wedding games for guests", "wedding activities for guests"]
+    },
+    {
+      "owner": "/blog/cornhole-rules/",
+      "intent": "game rules",
+      "variants": ["cornhole rules", "how to play cornhole", "cornhole scoring", "bean bag toss rules"]
+    },
+    {
+      "owner": "/blog/how-to-run-cornhole-tournament/",
+      "intent": "tournament planning",
+      "variants": ["cornhole tournament bracket", "how to run a cornhole tournament", "corn toss tournament brackets", "cornhole tournament setup"]
+    }
+  ]
+}

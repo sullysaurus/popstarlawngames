@@ -21,11 +21,16 @@ async function existingKeywords() {
 
 async function loadQueue() {
   const state = await readJson(statePath, {});
-  let queue = await readJson(reportQueuePath, null);
-  if (!queue) {
-    const seeds = await readJson(path.join(root, "seo/keyword-seeds.json"), []);
-    queue = scoreQueue(seeds, [], [], await existingKeywords());
-  }
+  const seeds = await readJson(path.join(root, "seo/keyword-seeds.json"), []);
+  const research = await readJson(path.join(root, "seo/keywords-everywhere-research.json"), {rows: []});
+  const baseline = scoreQueue(seeds, research.rows || [], [], await existingKeywords());
+  const reportQueue = await readJson(reportQueuePath, []);
+  const reportById = new Map(reportQueue.map((item) => [item.id, item]));
+  const queue = baseline.map((item) => {
+    const reportItem = reportById.get(item.id);
+    if (!reportItem) return item;
+    return {...item, score: reportItem.score, evidence: reportItem.evidence, metrics: {...item.metrics, ...reportItem.metrics}};
+  });
   return queue.map((item) => ({...item, workflow: state[item.id] || {status: "queued"}}));
 }
 

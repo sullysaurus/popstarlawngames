@@ -1,7 +1,7 @@
 import fs from "node:fs/promises";
 import path from "node:path";
 import { GoogleAuth } from "google-auth-library";
-import { renderDashboard, renderSummary, scoreQueue } from "./seo-dashboard-lib.mjs";
+import { dailyKeywordBatch, renderDashboard, renderSummary, scoreQueue, slugify } from "./seo-dashboard-lib.mjs";
 
 const root = path.resolve(import.meta.dirname, "..");
 const args = new Map(process.argv.slice(2).reduce((pairs, value, index, all) => value.startsWith("--") ? [...pairs, [value, all[index + 1]?.startsWith("--") ? true : all[index + 1] ?? true]] : pairs, []));
@@ -99,25 +99,43 @@ async function fetchGsc(token) {
 }
 
 async function fetchKeywords(keywords) {
+  const snapshotPath = path.join(root, "seo/keywords-everywhere-research.json");
+  let snapshotRows = [];
+  try {
+    const snapshot = JSON.parse(await fs.readFile(snapshotPath, "utf8"));
+    snapshotRows = snapshot.rows || [];
+  } catch (error) { if (error.code !== "ENOENT") throw error; }
+  const mergeRows = (freshRows) => {
+    const rows = new Map(snapshotRows.map((row) => [row.keyword.toLowerCase(), row]));
+    freshRows.forEach((row) => rows.set(row.keyword.toLowerCase(), row));
+    return [...rows.values()];
+  };
   const importPath = path.join(root, "seo/keywords-everywhere-import.json");
   try {
     const rows = JSON.parse(await fs.readFile(importPath, "utf8"));
-    return {rows, source: "local import"};
+    return {rows: mergeRows(rows), source: "local import + research snapshot"};
   } catch (error) { if (error.code !== "ENOENT") throw error; }
-  if (!process.env.KEYWORDS_EVERYWHERE_API_KEY) throw new Error("KEYWORDS_EVERYWHERE_API_KEY is not configured");
+  if (!process.env.KEYWORDS_EVERYWHERE_API_KEY) {
+    if (snapshotRows.length) return {rows: snapshotRows, source: "research snapshot"};
+    throw new Error("KEYWORDS_EVERYWHERE_API_KEY is not configured");
+  }
   const requestedLimit = Number(process.env.KEYWORDS_EVERYWHERE_DAILY_LIMIT || 20);
   const limit = Math.max(1, Math.min(100, requestedLimit));
   const form = new URLSearchParams({dataSource: "gkp", country: "us", currency: "usd"});
-  keywords.slice(0, limit).forEach((keyword) => form.append("kw[]", keyword));
+  dailyKeywordBatch(keywords, limit).forEach((keyword) => form.append("kw[]", keyword));
   const payload = await apiJson("https://api.keywordseverywhere.com/v1/get_keyword_data", {method: "POST", headers: {Authorization: `Bearer ${process.env.KEYWORDS_EVERYWHERE_API_KEY}`, "Content-Type": "application/x-www-form-urlencoded"}, body: form});
-  return {source: "API", rows: (payload.data || []).map((row) => ({keyword: row.keyword, volume: Number(row.vol || 0), cpc: row.cpc, competition: Number(row.competition || 0), trend: row.trend || []}))};
+  const freshRows = (payload.data || []).map((row) => ({keyword: row.keyword, volume: Number(row.vol || 0), cpc: row.cpc, competition: Number(row.competition || 0), trend: row.trend || []}));
+  return {source: "rotating API batch + research snapshot", rows: mergeRows(freshRows)};
 }
 
-async function existingTargetKeywords() {
+async function existingContent() {
   const directory = path.join(root, "src/content/blog");
   const files = await fs.readdir(directory);
   const contents = await Promise.all(files.filter((file) => /\.mdx?$/.test(file)).map((file) => fs.readFile(path.join(directory, file), "utf8")));
-  return contents.map((content) => content.match(/^targetKeyword:\s*["']?([^\n"']+)/m)?.[1]?.trim()).filter(Boolean);
+  return contents.map((content) => ({
+    keyword: content.match(/^targetKeyword:\s*["']?([^\n"']+)/m)?.[1]?.trim(),
+    publishedDate: content.match(/^publishedDate:\s*([^\n]+)/m)?.[1]?.trim(),
+  })).filter((item) => item.keyword);
 }
 
 async function buildReport() {
@@ -150,9 +168,14 @@ async function buildReport() {
     status.keywords = {ok: true, message: result.source};
   } catch (error) { status.keywords.message = error.message; }
 
-  const existingKeywords = await existingTargetKeywords();
+  const articles = await existingContent();
+  const existingKeywords = articles.map((article) => article.keyword);
+  const schedule = new Map(articles.map((article) => [slugify(article.keyword), article.publishedDate]));
   const contentState = JSON.parse(await fs.readFile(path.join(root, "seo/content-state.json"), "utf8"));
-  const queue = scoreQueue(seeds, keywords, gsc.queries, existingKeywords).map((item) => ({...item, workflow: contentState[item.id] || {status: "queued"}}));
+  const queue = scoreQueue(seeds, keywords, gsc.queries, existingKeywords).map((item) => ({
+    ...item,
+    workflow: {...(contentState[item.id] || {status: "queued"}), scheduledFor: schedule.get(item.id) || null},
+  }));
   return {generatedAt: new Date().toISOString(), periods, status, ga4, gsc, keywords, queue};
 }
 

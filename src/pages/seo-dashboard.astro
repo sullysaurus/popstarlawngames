@@ -49,7 +49,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
 
 <script>
   type MetricSet = Record<string, number | null | undefined>;
-  type QueueItem = {id:string; score:number; title:string; keyword:string; action:string; workflow?:{status?:string}; metrics?:{monthlyVolume?:number|null;gscPosition?:number|null}};
+  type QueueItem = {id:string; score:number; title:string; keyword:string; action:string; workflow?:{status?:string;scheduledFor?:string|null}; metrics?:{monthlyVolume?:number|null;gscPosition?:number|null}};
   type SearchRow = {keys?:string[];query?:string;clicks?:number;impressions?:number;position?:number};
   type Report = {generatedAt:string;status:Record<string,{ok:boolean}>;ga4?:{current?:MetricSet;previous?:MetricSet};gsc?:{totals?:MetricSet;previousTotals?:MetricSet;queries?:SearchRow[]};queue?:QueueItem[]};
   function query<T extends Element>(selector: string): T { const node = document.querySelector<T>(selector); if (!node) throw new Error(`Missing dashboard element: ${selector}`); return node; }
@@ -71,6 +71,14 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     if (className) node.className = className;
     parent.append(node);
     return node;
+  }
+
+  function workflowLabel(item: QueueItem, generatedAt: string) {
+    const scheduledFor = item.workflow?.scheduledFor;
+    if (!scheduledFor) return item.workflow?.status || "queued";
+    if (scheduledFor <= generatedAt.slice(0, 10)) return "published";
+    const date = new Date(`${scheduledFor}T00:00:00Z`);
+    return `scheduled ${date.toLocaleDateString("en-US", {month: "short", day: "numeric", timeZone: "UTC"})}`;
   }
 
   function render(report: Report) {
@@ -99,7 +107,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     });
 
     const queue = report.queue || [];
-    nextItem = queue.find((item) => item.action !== "landing-page" && !["drafted", "published"].includes(item.workflow?.status || "queued")) || queue[0];
+    nextItem = queue.find((item) => item.action !== "landing-page" && !["drafted", "published"].includes(item.workflow?.status || "queued"));
     query("#next-score").textContent = nextItem ? format(nextItem.score) : "—";
     query("#next-title").textContent = nextItem?.title || "Queue is clear";
     query("#next-keyword").textContent = nextItem ? `${nextItem.keyword} · ${nextItem.action}` : "No eligible drafts remain.";
@@ -112,7 +120,7 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       const scoreCell = document.createElement("td"); addText(scoreCell, "span", format(item.score), "queue-score"); row.append(scoreCell);
       const titleCell = document.createElement("td"); addText(titleCell, "strong", item.title); addText(titleCell, "small", item.keyword); row.append(titleCell);
       addText(row, "td", item.action);
-      addText(row, "td", item.workflow?.status || "queued", "status-cell");
+      addText(row, "td", workflowLabel(item, report.generatedAt), "status-cell");
       addText(row, "td", format(item.metrics?.monthlyVolume));
       addText(row, "td", format(item.metrics?.gscPosition, 1));
       queueBody.append(row);
@@ -121,7 +129,12 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     const queryList = query("#query-list");
     queryList.replaceChildren();
     const queries = (report.gsc?.queries || []).slice(0, 8);
-    if (!queries.length) addText(queryList, "p", "Connect Search Console to see live search queries.", "empty-state");
+    if (!queries.length) {
+      const message = report.status?.gsc?.ok
+        ? "Search Console is connected. No queries have impressions in the current reporting window yet."
+        : "Connect Search Console to see live search queries.";
+      addText(queryList, "p", message, "empty-state");
+    }
     queries.forEach((query, index) => {
       const item = document.createElement("article");
       addText(item, "span", String(index + 1).padStart(2, "0"), "query-number");
