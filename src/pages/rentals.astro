@@ -2,45 +2,44 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
 import SiteFooter from "../components/SiteFooter.astro";
+import AvailabilityForm from "../components/AvailabilityForm.astro";
 ---
 
 <BaseLayout
-  title="Book Lawn Game Rentals in Raleigh | Popstar Lawn Games"
-  description="Check dates, prices, and availability for cornhole, giant tower, four-in-a-row, Putterball, ring toss, and yard dice rentals across Raleigh and the Triangle."
+  title="Check Lawn Game Rental Availability in Raleigh | Popstar Lawn Games"
+  description="Request availability for cornhole, giant tower, four-in-a-row, Putterball, ring toss, and yard dice rentals across Raleigh and the Triangle."
 >
   <SiteHeader />
 
   <main>
     <section class="rental-hero">
       <div>
-        <p class="eyebrow">Direct online booking</p>
-        <h1>Pick a date.<br /><em>Bring the play.</em></h1>
+        <p class="eyebrow">Start with your wish list</p>
+        <h1>Pick the fun.<br /><em>We’ll check the date.</em></h1>
       </div>
       <div class="rental-hero-copy">
         <p>
-          Choose your event dates, add an available package to your cart, and complete checkout
-          without waiting for a quote. Need an unusual layout or a larger styled event? We can help.
+          Choose a package or the games you have in mind. We’ll confirm what is available for your
+          event and send a complete quote before you make any commitment.
         </p>
-        <a class="text-link" href="/#custom-inquiry">Get help with a custom event <span aria-hidden="true">↗</span></a>
+        <a class="text-link" href="#availability-form">Request availability <span aria-hidden="true">↓</span></a>
       </div>
     </section>
 
     <section class="booking-shell" aria-labelledby="booking-title">
       <div class="booking-intro">
-        <p class="eyebrow">Live inventory</p>
-        <h2 id="booking-title">Book in three steps.</h2>
-        <p>1. Select your rental period. 2. Choose a package. 3. Open your cart and check out.</p>
+        <p class="eyebrow">Availability request</p>
+        <h2 id="booking-title">What would you like to play?</h2>
+        <p>Pick a starting package and any favorite games. We’ll check the date, make sure the mix fits your event, and reply with next steps.</p>
       </div>
 
-      <div class="booqable-catalog">
-        <div class="booqable-product-list"></div>
-      </div>
+      <AvailabilityForm heading="Build your wish list." />
 
       <aside class="booking-note">
-        <strong>A quick heads-up:</strong>
+        <strong>Good to know:</strong>
         <span>
-          The prices shown cover the games. Delivery, setup, and pickup details depend on your
-          venue; we’ll confirm those logistics by email after your online reservation.
+          Sending this form does not hold inventory or charge you. We’ll confirm the games,
+          delivery, setup, pickup, and full price with you first.
         </span>
       </aside>
     </section>
@@ -54,10 +53,9 @@ import SiteFooter from "../components/SiteFooter.astro";
         Our Large Event Set starts at $450 for 10 or more play stations. Tell us about the crowd and
         venue, and we’ll build the right high-capacity mix.
       </p>
-      <a class="button button-accent" href="/#custom-inquiry">Tell us about the event</a>
+      <a class="button button-accent" href="#availability-form">Tell us about the event</a>
     </section>
   </main>
 
   <SiteFooter />
-  <script is:inline src="https://4f058e46-ebd1-45b7-90bb-12c7cb19e4d4.assets.booqable.com/v2/booqable.js"></script>
 </BaseLayout>

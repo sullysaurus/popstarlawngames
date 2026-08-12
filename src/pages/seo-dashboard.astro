@@ -2,7 +2,7 @@
 import BaseLayout from "../layouts/BaseLayout.astro";
 ---
 
-<BaseLayout title="SEO Command Center | Popstar Lawn Games" description="Private Popstar Lawn Games organic growth dashboard." noindex={true}>
+<BaseLayout title="SEO Command Center | Popstar Lawn Games" description="Popstar Lawn Games organic growth dashboard." noindex={true}>
   <main class="command-shell">
     <header class="command-header">
       <a class="command-brand" href="/" aria-label="Popstar Lawn Games home">
@@ -11,27 +11,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </a>
       <div class="header-meta">
         <span class="live-dot" aria-hidden="true"></span>
-        <span id="report-age">Private field report</span>
-        <button id="logout" class="text-button" type="button" hidden>Log out</button>
+        <span id="report-age">Loading field report…</span>
       </div>
     </header>
 
-    <section id="login-panel" class="login-stage" aria-labelledby="login-title">
-      <div class="login-card">
-        <p class="dashboard-eyebrow">Authorized crew only</p>
-        <h1 id="login-title">Open the<br /><em>playbook.</em></h1>
-        <p>Organic performance, search demand, and the next content plays—all in one private view.</p>
-        <form id="dashboard-login">
-          <label><span>Username</span><input id="dashboard-user" name="username" autocomplete="username" value="danny" required /></label>
-          <label><span>Password</span><input id="dashboard-password" name="password" type="password" autocomplete="current-password" required /></label>
-          <button class="command-button" type="submit">Enter command center <span aria-hidden="true">→</span></button>
-          <p id="login-message" class="login-message" role="status"></p>
-        </form>
-      </div>
-      <div class="scoreboard-art" aria-hidden="true"><span>SEO</span><strong>01</strong><small>Next play starts here</small></div>
-    </section>
-
-    <section id="dashboard" class="dashboard" hidden>
+    <section id="dashboard" class="dashboard">
       <div class="dashboard-intro">
         <div><p class="dashboard-eyebrow">Tonight’s field report</p><h1>What’s moving<br /><em>the crowd?</em></h1></div>
         <div class="source-strip" id="source-strip" aria-label="Data source status"></div>
@@ -69,11 +53,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
   type SearchRow = {keys?:string[];query?:string;clicks?:number;impressions?:number;position?:number};
   type Report = {generatedAt:string;status:Record<string,{ok:boolean}>;ga4?:{current?:MetricSet;previous?:MetricSet};gsc?:{totals?:MetricSet;previousTotals?:MetricSet;queries?:SearchRow[]};queue?:QueueItem[]};
   function query<T extends Element>(selector: string): T { const node = document.querySelector<T>(selector); if (!node) throw new Error(`Missing dashboard element: ${selector}`); return node; }
-  const loginPanel = query<HTMLElement>("#login-panel");
-  const dashboard = query<HTMLElement>("#dashboard");
-  const loginForm = query<HTMLFormElement>("#dashboard-login");
-  const message = query<HTMLElement>("#login-message");
-  const logout = query<HTMLButtonElement>("#logout");
   const copyPrompt = query<HTMLButtonElement>("#copy-prompt");
   const format = (value: unknown, digits = 0) => value == null ? "—" : Number(value).toLocaleString("en-US", {maximumFractionDigits: digits});
   const change = (current: number, previous: number) => previous ? ((current - previous) / previous) * 100 : null;
@@ -152,25 +131,13 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     });
   }
 
-  async function load(token: string) {
-    message.textContent = "Opening the playbook…";
-    const response = await fetch("/api/seo-dashboard", {headers: {Authorization: `Basic ${token}`}, cache: "no-store"});
+  async function load() {
+    const response = await fetch("/api/seo-dashboard", {cache: "no-store"});
     const result = await response.json().catch(() => ({error: "Dashboard returned an invalid response"}));
     if (!response.ok) throw new Error(result.error || "Could not open dashboard");
-    sessionStorage.setItem("popstar-dashboard-auth", token);
     render(result);
-    loginPanel.hidden = true;
-    dashboard.hidden = false;
-    logout.hidden = false;
   }
 
-  loginForm.addEventListener("submit", async (event) => {
-    event.preventDefault();
-    const user = query<HTMLInputElement>("#dashboard-user").value;
-    const password = query<HTMLInputElement>("#dashboard-password").value;
-    try { await load(btoa(`${user}:${password}`)); } catch (error) { message.textContent = error instanceof Error ? error.message : "Could not open dashboard"; }
-  });
-  logout.addEventListener("click", () => { sessionStorage.removeItem("popstar-dashboard-auth"); location.reload(); });
   copyPrompt.addEventListener("click", async () => {
     if (!nextItem) return;
     const prompt = `Use $popstar-content-engine to draft the content queue item "${nextItem.id}" locally, run the editorial and build checks, and leave it ready for my review.`;
@@ -178,8 +145,9 @@ import BaseLayout from "../layouts/BaseLayout.astro";
     copyPrompt.textContent = "Prompt copied ✓";
     setTimeout(() => { copyPrompt.textContent = "Copy local draft prompt"; }, 1800);
   });
-  const saved = sessionStorage.getItem("popstar-dashboard-auth");
-  if (saved) load(saved).catch((error) => { sessionStorage.removeItem("popstar-dashboard-auth"); message.textContent = error instanceof Error ? error.message : "Could not open dashboard"; });
+  load().catch((error) => {
+    query("#report-age").textContent = error instanceof Error ? error.message : "Could not open dashboard";
+  });
 </script>
 
 <style is:global>

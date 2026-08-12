@@ -1,6 +1,6 @@
 # Popstar SEO command center setup
 
-The system has two guarded workflows:
+The system has two controlled workflows:
 
 1. **Nightly SEO dashboard** measures organic performance, enriches a limited keyword set, and creates a prioritized content queue.
 2. **Generate reviewed SEO draft** turns an approved queue issue into an Astro Markdown draft and opens a pull request.
@@ -9,19 +9,17 @@ No workflow merges a pull request or publishes content. Netlify only publishes a
 
 ## Website dashboard
 
-The private dashboard route is `https://popstarlawngames.com/seo-dashboard/`. Its Astro page contains no analytics data. A Netlify Function authenticates requests and reads the latest nightly report from Netlify Blobs, whose data persists across deploys.
+The dashboard route is `https://popstarlawngames.com/seo-dashboard/`. Its Astro page contains no analytics data; a Netlify Function reads the latest nightly report from Netlify Blobs, whose data persists across deploys. The dashboard does not require a password, so anyone with the URL can view the report even though the page is marked `noindex`.
 
 Add these environment variables in **Netlify → Project configuration → Environment variables**. Do not put their values in `netlify.toml` or the repository:
 
 | Name | Purpose |
 | --- | --- |
-| `SEO_DASHBOARD_USER` | Login username; defaults to `danny` |
-| `SEO_DASHBOARD_PASSWORD` | A unique dashboard password |
 | `SEO_DASHBOARD_INGEST_TOKEN` | A separate long random token used only by GitHub to upload reports |
 
 Add the same `SEO_DASHBOARD_INGEST_TOKEN` value as a GitHub Actions secret. The non-secret GitHub variable `SEO_DASHBOARD_ENDPOINT` should be `https://popstarlawngames.com/api/seo-dashboard`.
 
-After configuring Netlify variables, trigger a new deploy so Functions receive them. Then manually run **Nightly SEO dashboard** once from GitHub Actions. The report will appear at the protected website route.
+After configuring the Netlify variable, trigger a new deploy so Functions receive it. Then manually run **Nightly SEO dashboard** once from GitHub Actions. The report will appear at the website route.
 
 ## 1. Connect Google Analytics and Search Console
 

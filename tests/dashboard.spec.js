@@ -25,14 +25,10 @@ test.beforeEach(async ({ request }) => {
 });
 
 for (const viewport of [{width: 390, height: 844}, {width: 1440, height: 1000}]) {
-  test(`protected dashboard works at ${viewport.width}px`, async ({ page }) => {
+  test(`dashboard works at ${viewport.width}px`, async ({ page }) => {
     await page.setViewportSize(viewport);
     await page.goto(`${baseURL}/seo-dashboard/`);
-    await expect(page.locator("#login-panel")).toBeVisible();
-    await page.locator("#dashboard-password").fill("local-test-password");
-    await page.locator("#dashboard-login button").click();
     await expect(page.locator("#dashboard")).toBeVisible();
-    await expect(page.locator("#login-panel")).toBeHidden();
     await expect(page.locator("#metric-sessions")).toHaveText("120");
     await expect(page.locator("#queue-body tr")).toHaveCount(2);
     const widths = await page.evaluate(() => ({page: document.documentElement.scrollWidth, viewport: innerWidth}));

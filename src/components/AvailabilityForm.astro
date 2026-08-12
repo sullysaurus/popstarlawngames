@@ -1,0 +1,161 @@
+---
+interface Props {
+  heading?: string;
+  intro?: string;
+}
+
+const {
+  heading = "Tell us what sounds fun.",
+  intro = "Share your date and wish list. We’ll check what’s available, recommend the best mix, and send a complete quote before anything is booked.",
+} = Astro.props;
+
+const minimumDate = new Date().toISOString().slice(0, 10);
+---
+
+<div class="availability-panel">
+  <div class="form-heading">
+    <p class="eyebrow">No commitment · no payment yet</p>
+    <h2>{heading}</h2>
+    <p>{intro}</p>
+  </div>
+
+  <form
+    class="availability-form"
+    id="availability-form"
+    name="availability-request"
+    method="POST"
+    action="/thanks/"
+    data-netlify="true"
+    data-netlify-honeypot="bot-field"
+  >
+    <input type="hidden" name="form-name" value="availability-request" />
+    <input type="hidden" name="subject" value="New Popstar Lawn Games availability request" />
+    <p class="form-honeypot" aria-hidden="true">
+      <label>Leave this empty <input name="bot-field" tabindex="-1" autocomplete="off" /></label>
+    </p>
+
+    <label class="date-field">
+      <span>Event date</span>
+      <input type="date" name="eventDate" min={minimumDate} required />
+    </label>
+    <label>
+      <span>Delivery ZIP</span>
+      <input type="text" name="deliveryZip" inputmode="numeric" autocomplete="postal-code" placeholder="27601" pattern="[0-9]{5}" maxlength="5" required />
+    </label>
+    <label>
+      <span>Event type</span>
+      <select name="eventType" required>
+        <option value="">Choose one</option>
+        <option>Wedding</option>
+        <option>Corporate event</option>
+        <option>School or university</option>
+        <option>Birthday or private party</option>
+        <option>Community event</option>
+        <option>Something else</option>
+      </select>
+    </label>
+    <label>
+      <span>Estimated guests</span>
+      <input type="number" name="guestCount" inputmode="numeric" min="1" placeholder="100" />
+    </label>
+
+    <fieldset class="package-choice">
+      <legend>What kind of setup are you considering?</legend>
+      <label><input type="radio" name="package" value="Social Set — 3 games" required /><span><strong>Social Set</strong><small>3 games · from $200</small></span></label>
+      <label><input type="radio" name="package" value="Celebration Set — 5 games" /><span><strong>Celebration Set</strong><small>5 games · from $325</small></span></label>
+      <label><input type="radio" name="package" value="Headliner — all 6 games" /><span><strong>Headliner</strong><small>All 6 games · from $395</small></span></label>
+      <label><input type="radio" name="package" value="Large Event Set — 10+ stations" /><span><strong>Large Event Set</strong><small>10+ stations · from $450</small></span></label>
+      <label><input type="radio" name="package" value="Hosted company event" /><span><strong>Hosted event</strong><small>Custom production · from $2,500</small></span></label>
+      <label><input type="radio" name="package" value="Not sure — recommend one" /><span><strong>Not sure yet</strong><small>Recommend a mix for me</small></span></label>
+    </fieldset>
+
+    <fieldset class="game-choice">
+      <legend>Games you’d especially like <small>optional</small></legend>
+      <label><input type="checkbox" name="gameInterests" value="Cornhole" /><span>Cornhole</span></label>
+      <label><input type="checkbox" name="gameInterests" value="Giant Tower" /><span>Giant Tower</span></label>
+      <label><input type="checkbox" name="gameInterests" value="Four-in-a-Row" /><span>Four-in-a-Row</span></label>
+      <label><input type="checkbox" name="gameInterests" value="Putterball" /><span>Putterball</span></label>
+      <label><input type="checkbox" name="gameInterests" value="Ring Toss" /><span>Ring Toss</span></label>
+      <label><input type="checkbox" name="gameInterests" value="Yard Dice" /><span>Yard Dice</span></label>
+    </fieldset>
+
+    <label>
+      <span>Your name</span>
+      <input type="text" name="name" autocomplete="name" required />
+    </label>
+    <label>
+      <span>Email</span>
+      <input type="email" name="email" autocomplete="email" required />
+    </label>
+    <label>
+      <span>Phone <small>optional</small></span>
+      <input type="tel" name="phone" autocomplete="tel" />
+    </label>
+    <label>
+      <span>Venue or city <small>optional</small></span>
+      <input type="text" name="venue" autocomplete="street-address" />
+    </label>
+    <label class="message-field">
+      <span>Anything else? <small>optional</small></span>
+      <textarea name="message" rows="4" placeholder="Timing, venue details, rain plan, or questions"></textarea>
+    </label>
+
+    <div class="form-submit">
+      <button class="button button-accent" type="submit">Check my date <span aria-hidden="true">→</span></button>
+      <p>We’ll reply with availability and next steps. This form does not reserve inventory or charge you.</p>
+    </div>
+  </form>
+</div>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>('form[name="availability-request"]').forEach((form) => {
+    form.addEventListener("submit", () => {
+      const analytics = window as typeof window & { gtag?: (...args: unknown[]) => void };
+      const selectedPackage = form.querySelector<HTMLInputElement>('input[name="package"]:checked');
+      analytics.gtag?.("event", "generate_lead", {
+        form_name: "availability-request",
+        package_name: selectedPackage?.value || "not-selected",
+      });
+    });
+  });
+</script>
+
+<style>
+  .availability-panel { min-width: 0; padding: clamp(1.25rem, 3vw, 2.25rem); background: var(--paper); border: var(--border); box-shadow: 7px 7px 0 var(--ink); }
+  .form-heading { display: grid; grid-template-columns: minmax(0, 1fr) minmax(240px, .7fr); gap: .6rem 2rem; align-items: end; padding-bottom: 1.6rem; border-bottom: var(--border); }
+  .form-heading .eyebrow { grid-column: 1 / -1; margin: 0; }
+  .form-heading h2 { margin: 0; font-family: var(--serif); font-size: clamp(2.4rem, 5vw, 4.8rem); line-height: .9; letter-spacing: -.04em; }
+  .form-heading > p:last-child { margin: 0; }
+  .availability-form { margin-top: 1.5rem; }
+  fieldset { min-width: 0; margin: 0; padding: 0; border: 0; }
+  legend { width: 100%; margin-bottom: .7rem; font-size: .74rem; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+  legend small { font-weight: 500; letter-spacing: 0; text-transform: none; }
+  .package-choice, .game-choice { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: .65rem; }
+  .package-choice legend, .game-choice legend { grid-column: 1 / -1; }
+  .package-choice label, .game-choice label { display: flex; min-height: 66px; align-items: center; gap: .7rem; padding: .8rem; background: var(--cream); border: 2px solid var(--ink); cursor: pointer; }
+  .package-choice input, .game-choice input { flex: 0 0 auto; width: 20px; height: 20px; accent-color: var(--blue); }
+  .package-choice span, .game-choice span { margin: 0; font-size: .78rem; letter-spacing: 0; text-transform: none; }
+  .package-choice strong, .package-choice small { display: block; }
+  .package-choice small { margin-top: .15rem; font-size: .7rem; font-weight: 500; }
+  .package-choice label:has(input:checked), .game-choice label:has(input:checked) { background: var(--yellow); box-shadow: 3px 3px 0 var(--ink); transform: translate(-2px, -2px); }
+  .game-choice { grid-template-columns: repeat(6, minmax(0, 1fr)); }
+  .game-choice label { min-height: 52px; }
+  .message-field { grid-column: 1 / -1; }
+  .form-submit { grid-column: 1 / -1; display: flex; align-items: center; gap: 1rem 1.5rem; margin-top: .4rem; }
+  .form-submit .button { width: auto; min-width: 220px; }
+  .form-submit p { max-width: 520px; margin: 0; font-size: .78rem; color: #5d5952; }
+  @media (max-width: 1020px) {
+    .package-choice { grid-template-columns: 1fr 1fr; }
+    .game-choice { grid-template-columns: repeat(3, 1fr); }
+  }
+  @media (max-width: 680px) {
+    .form-heading { grid-template-columns: 1fr; }
+    .form-heading .eyebrow { grid-column: auto; }
+    .package-choice, .game-choice { grid-template-columns: 1fr 1fr; }
+    .form-submit { align-items: stretch; flex-direction: column; }
+    .form-submit .button { width: 100%; }
+  }
+  @media (max-width: 340px) {
+    .package-choice, .game-choice { grid-template-columns: 1fr; }
+  }
+</style>

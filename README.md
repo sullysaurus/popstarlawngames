@@ -11,12 +11,9 @@ npm run check
 npm run build
 ```
 
-The current inquiry flow is a working front-end prototype. The next integration point is a rental
-platform such as Goodshuffle Pro for live inventory, proposals, contracts, deposits, and payments.
-
-To send inquiry forms directly to a form service or booking webhook, copy `.env.example` to `.env`
-and set `PUBLIC_BOOKING_FORM_ENDPOINT`. Without an endpoint, the form opens a pre-filled email to
-`PUBLIC_BOOKING_EMAIL`, so a visitor never reaches a dead end.
+Availability requests use a native Netlify form named `availability-request`. Netlify detects the
+form during deploy, stores submissions in the site dashboard, and redirects successful requests to
+`/thanks/`. No inventory or checkout platform is required.
 
 Video asset specifications live in `public/assets/README.md`.
 
@@ -35,8 +32,8 @@ npm run content:brief -- next
 
 Then ask Codex: `Use $popstar-content-engine to draft the next queued article locally.`
 
-The protected website dashboard lives at `https://popstarlawngames.com/seo-dashboard/` after its
-Netlify password and ingestion token are configured.
+The website dashboard lives at `https://popstarlawngames.com/seo-dashboard/`. A separate Netlify
+ingestion token protects report uploads.
 
 See [`docs/seo-dashboard-setup.md`](docs/seo-dashboard-setup.md) for the one-time Google access,
 GitHub secrets, costs, and editorial workflow.

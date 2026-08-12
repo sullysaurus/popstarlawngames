@@ -5,50 +5,47 @@ const baseURL = process.env.POPSTAR_TEST_URL ?? "http://127.0.0.1:4321";
 
 test.use({ viewport: { width: 390, height: 844 } });
 
-test("mobile booking form sends the complete request in one step", async ({ page }) => {
+test("mobile availability form captures the complete request", async ({ page }) => {
   await page.goto(baseURL);
 
   await expect(page.locator(".site-header > .button")).toBeVisible();
-  await page.locator("#custom-inquiry summary").click();
-  await page.locator("#event-date").fill("10/24/2026");
-  await page.locator("#event-zip").fill("27601");
-  await page.locator("#event-type").selectOption({ label: "Wedding" });
-  await page.locator("#event-package").selectOption("The Celebration Set");
+  await page.locator('#availability-form input[name="eventDate"]').fill("2026-10-24");
+  await page.locator('#availability-form input[name="deliveryZip"]').fill("27601");
+  await page.locator('#availability-form select[name="eventType"]').selectOption({ label: "Wedding" });
+  await page.locator('#availability-form input[value="Celebration Set — 5 games"]').check();
+  await page.locator('#availability-form input[value="Cornhole"]').check();
   await page.locator('#availability-form input[name="name"]').fill("Taylor Guest");
   await page.locator('#availability-form input[name="email"]').fill("taylor@example.com");
-  await page.locator("#booking-submit").click();
 
-  await expect(page.locator("#availability-message")).toContainText(/request is in|email app is opening/);
-  await expect(page.locator("#booking-submit")).toBeEnabled();
+  await expect(page.locator("#availability-form")).toHaveAttribute("method", "POST");
+  await expect(page.locator("#availability-form")).toHaveAttribute("action", "/thanks/");
+  await expect(page.locator("#availability-form")).toHaveAttribute("data-netlify", "true");
+  await expect(page.locator('#availability-form input[name="form-name"]')).toHaveValue("availability-request");
 });
 
-test("package cards send customers into direct online booking", async ({ page }) => {
+test("package cards send customers to the availability form", async ({ page }) => {
   await page.goto(baseURL);
-  await expect(page.locator('.package-card a[href="/rentals/"]')).toHaveCount(3);
-  await expect(page.locator("#custom-inquiry")).not.toHaveAttribute("open", "");
+  await expect(page.locator('.package-card a[href="/rentals/#availability-form"]')).toHaveCount(3);
 });
 
-test("large event option opens the inquiry with the package selected", async ({ page }) => {
+test("large event option is available in the request form", async ({ page }) => {
   await page.goto(baseURL);
-  await page.locator('[data-inquiry-package="The Large Event Set"]').click();
-  await expect(page.locator("#custom-inquiry")).toHaveAttribute("open", "");
-  await expect(page.locator("#event-package")).toHaveValue("The Large Event Set");
+  await expect(page.locator('#availability-form input[value="Large Event Set — 10+ stations"]')).toHaveCount(1);
   await expect(page.locator(".capacity-price")).toContainText("$450");
 });
 
-test("date request explains missing required details", async ({ page }) => {
+test("availability request uses native required-field validation", async ({ page }) => {
   await page.goto(baseURL);
-  await page.locator("#custom-inquiry summary").click();
   await page.locator("#availability-form button").click();
-  await expect(page.locator("#availability-message")).toContainText("Complete the required fields");
+  const dateIsValid = await page.locator('#availability-form input[name="eventDate"]').evaluate((input) => input.validity.valid);
+  expect(dateIsValid).toBe(false);
 });
 
 test("event date field matches the other mobile inputs", async ({ page }) => {
   await page.setViewportSize({ width: 320, height: 760 });
   await page.goto(baseURL);
-  await page.locator("#custom-inquiry summary").click();
 
-  const bounds = await page.locator("#event-date").evaluate((input) => {
+  const bounds = await page.locator('#availability-form input[name="eventDate"]').evaluate((input) => {
     const inputRect = input.getBoundingClientRect();
     const formRect = input.closest("form").getBoundingClientRect();
     return {
@@ -66,7 +63,7 @@ test("event date field matches the other mobile inputs", async ({ page }) => {
 
   expect(bounds.inputLeft).toBeGreaterThanOrEqual(bounds.formLeft - 1);
   expect(bounds.inputRight).toBeLessThanOrEqual(bounds.formRight + 1);
-  expect(bounds.inputType).toBe("text");
+  expect(bounds.inputType).toBe("date");
   expect(bounds.minWidth).toBe("0px");
   expect(bounds.labelOverflow).toBe("hidden");
   expect(bounds.pageWidth).toBeLessThanOrEqual(bounds.viewportWidth);
@@ -129,7 +126,6 @@ for (const width of [320, 360, 390]) {
           if (element.closest(".marquee, .closed") || element.classList.contains("ambient-video")) return [];
           const viewportOverflow = rect.left < -1 || rect.right > window.innerWidth + 1;
           const internalOverflow = element.scrollWidth > element.clientWidth + 1 && style.overflowX === "visible";
-          if (element.closest(".booqable-catalog") && !viewportOverflow) return [];
           return viewportOverflow || internalOverflow
             ? [{
                 tag: element.tagName,

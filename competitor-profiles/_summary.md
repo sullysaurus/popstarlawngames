@@ -40,4 +40,4 @@ The local and regional market consistently anchors packages with cornhole, giant
 
 ## Catalog policy
 
-Only publish an item as available after it has been acquired, photographed, measured, priced, and entered into Booqable with its real quantity. This keeps website claims, availability, and fulfillment aligned.
+Only publish an item as available after it has been acquired, photographed, measured, priced, and added to the internal availability tracker with its real quantity. This keeps website claims, availability, and fulfillment aligned.

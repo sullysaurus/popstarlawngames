@@ -1,0 +1,30 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import SiteFooter from "../components/SiteFooter.astro";
+---
+
+<BaseLayout title="Request received | Popstar Lawn Games" description="Your Popstar Lawn Games availability request has been received." noindex={true}>
+  <SiteHeader />
+  <main class="thanks-page">
+    <div class="thanks-card">
+      <p class="eyebrow">Request received</p>
+      <h1>Your date is<br /><em>on our radar.</em></h1>
+      <p>Thanks for sharing your plans. We’ll check the date and game mix, then follow up with availability and a complete quote.</p>
+      <div class="thanks-actions">
+        <a class="button button-primary" href="/">Back to the homepage</a>
+        <a class="text-link" href="/blog/">Browse the Playbook <span aria-hidden="true">→</span></a>
+      </div>
+    </div>
+  </main>
+  <SiteFooter />
+</BaseLayout>
+
+<style is:global>
+  .thanks-page { min-height: 70vh; display: grid; place-items: center; padding: clamp(4rem, 10vw, 9rem) 5vw; background: var(--yellow); }
+  .thanks-card { max-width: 900px; padding: clamp(2rem, 6vw, 5rem); background: var(--paper); border: var(--border); box-shadow: 9px 9px 0 var(--ink); }
+  .thanks-card h1 { margin: 0; font-family: var(--serif); font-size: clamp(4rem, 9vw, 8rem); line-height: .85; letter-spacing: -.05em; }
+  .thanks-card h1 em { color: var(--blue); }
+  .thanks-card > p:not(.eyebrow) { max-width: 650px; margin: 2rem 0; font-size: 1.15rem; }
+  .thanks-actions { display: flex; flex-wrap: wrap; align-items: center; gap: 1.25rem; }
+</style>

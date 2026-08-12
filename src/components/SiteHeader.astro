@@ -9,7 +9,7 @@ const { compact = false } = Astro.props;
 {!compact && (
   <div class="announcement">
     <p>Now booking the Triangle</p>
-    <a href="/rentals/">Book a package online <span aria-hidden="true">↗</span></a>
+    <a href="/rentals/#availability-form">Request your date <span aria-hidden="true">↗</span></a>
   </div>
 )}
 <header class="site-header">
@@ -19,9 +19,9 @@ const { compact = false } = Astro.props;
   </a>
   <nav aria-label="Primary navigation">
     <a href="/#packages">Packages</a>
-    <a href="/rentals/">Book a package</a>
+    <a href="/rentals/#availability-form">Request availability</a>
     <a href="/#occasions">Occasions</a>
     <a href="/blog/">Playbook</a>
   </nav>
-  <a class="button button-small button-dark" href="/rentals/">Check availability</a>
+  <a class="button button-small button-dark" href="/rentals/#availability-form">Check availability</a>
 </header>

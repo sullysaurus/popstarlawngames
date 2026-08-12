@@ -12,16 +12,6 @@ function matches(left = "", right = "") {
   return first.length === second.length && timingSafeEqual(first, second);
 }
 
-function basicCredentials(request) {
-  const header = request.headers.get("authorization") || "";
-  if (!header.startsWith("Basic ")) return null;
-  try {
-    const decoded = Buffer.from(header.slice(6), "base64").toString("utf8");
-    const separator = decoded.indexOf(":");
-    return separator === -1 ? null : [decoded.slice(0, separator), decoded.slice(separator + 1)];
-  } catch { return null; }
-}
-
 export default async (request) => {
   const store = getStore({name: "popstar-seo-dashboard", consistency: "strong"});
 
@@ -40,13 +30,6 @@ export default async (request) => {
   }
 
   if (request.method !== "GET") return json({error: "Method not allowed"}, 405, {Allow: "GET, PUT"});
-  const expectedUser = process.env.SEO_DASHBOARD_USER || "danny";
-  const expectedPassword = process.env.SEO_DASHBOARD_PASSWORD;
-  if (!expectedPassword) return json({error: "Dashboard access is not configured"}, 503);
-  const credentials = basicCredentials(request);
-  if (!credentials || !matches(credentials[0], expectedUser) || !matches(credentials[1], expectedPassword)) {
-    return json({error: "Unauthorized"}, 401, {"WWW-Authenticate": 'Basic realm="Popstar SEO", charset="UTF-8"'});
-  }
   const report = await store.get("latest", {type: "json"});
   if (!report) return json({error: "No report has been uploaded yet"}, 404);
   return json(report);

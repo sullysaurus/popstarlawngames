@@ -130,15 +130,7 @@ a { color: inherit; }
 
 .availability-wrap { display: grid; grid-template-columns: minmax(0, .7fr) minmax(0, 1.3fr); width: 100%; max-width: 100%; min-width: 0; gap: 4rem; padding: 3.5rem 5vw; overflow-x: hidden; background: var(--yellow); border-bottom: var(--border); }
 .availability-intro h2 { margin: 0; font-family: var(--serif); font-size: clamp(2.2rem, 4vw, 4rem); line-height: .95; }
-.availability-intro .button { margin-top: .8rem; }
-.custom-inquiry { align-self: center; min-width: 0; background: var(--paper); border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
-.custom-inquiry summary { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: 1.2rem 1.4rem; cursor: pointer; list-style: none; }
-.custom-inquiry summary::-webkit-details-marker { display: none; }
-.custom-inquiry summary > span:last-child { font-size: 1.7rem; font-weight: 700; line-height: 1; transition: transform .2s ease; }
-.custom-inquiry[open] summary { border-bottom: var(--border); }
-.custom-inquiry[open] summary > span:last-child { transform: rotate(45deg); }
 .availability-form { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); width: 100%; max-width: 100%; min-width: 0; align-items: end; gap: .8rem; }
-.custom-inquiry .availability-form { padding: 1.4rem; }
 .availability-form label { width: 100%; max-width: 100%; min-width: 0; }
 .availability-form .date-field { overflow: hidden; }
 .availability-form .message-field { grid-column: span 2; }
@@ -247,8 +239,6 @@ input:focus, select:focus, textarea:focus { outline: 3px solid var(--blue); outl
 .booking-intro .eyebrow { grid-column: 1 / -1; margin-bottom: -1rem; }
 .booking-intro h2 { margin: 0; font-family: var(--serif); font-size: clamp(3.2rem, 7vw, 7rem); line-height: .9; letter-spacing: -.045em; }
 .booking-intro > p:last-child { max-width: 480px; margin: 0; font-size: 1.05rem; }
-.booqable-catalog { min-width: 0; background: white; border: var(--border); box-shadow: 5px 5px 0 var(--ink); }
-.booqable-catalog { padding: clamp(1rem, 3vw, 2rem); overflow-x: hidden; }
 .booking-note { display: grid; grid-template-columns: auto 1fr; gap: .6rem; margin-top: 1.5rem; padding: 1.1rem 1.25rem; background: var(--yellow); border: var(--border); }
 .rental-concierge { display: grid; grid-template-columns: 1.1fr .7fr auto; gap: 3rem; align-items: center; padding: clamp(4rem, 7vw, 7rem) 5vw; color: white; background: var(--blue); border-top: var(--border); }
 .rental-concierge h2 { margin: 0; font-family: var(--serif); font-size: clamp(3rem, 6vw, 6rem); line-height: .9; }
