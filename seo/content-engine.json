@@ -1,0 +1,80 @@
+{
+  "version": 1,
+  "brand": {
+    "name": "Popstar Lawn Games",
+    "siteUrl": "https://popstarlawngames.com",
+    "audience": "Wedding, company-event, and party planners seeking premium lawn-game rentals",
+    "markets": ["Raleigh", "Durham", "Chapel Hill", "The Triangle"],
+    "voice": "Direct, useful, design-aware, warm, and free of padded marketing language",
+    "verifiedFacts": [
+      "The Social Set includes 3 games and starts at $200 for the games.",
+      "The Celebration Set includes 5 games and starts at $325 for the games.",
+      "The Headliner includes all 6 current games and starts at $395 for the games.",
+      "The Large Event Set starts at $450 for 10 or more simultaneous play stations.",
+      "Delivery, setup, after-midnight pickup, and next-day pickup vary by venue and timing.",
+      "Custom hosted company tournaments and field days start at $2,500."
+    ],
+    "prohibitedClaims": [
+      "Do not invent inventory, availability, testimonials, venue relationships, policies, or geographic guarantees."
+    ]
+  },
+  "content": {
+    "directory": "src/content/blog",
+    "schemaFile": "src/content.config.ts",
+    "extensions": ["md", "mdx"],
+    "fields": {
+      "title": "title",
+      "description": "description",
+      "publishedDate": "publishedDate",
+      "updatedDate": "updatedDate",
+      "targetKeyword": "targetKeyword",
+      "image": "image",
+      "imageAlt": "imageAlt"
+    },
+    "primaryCtas": {
+      "packages": "/#packages",
+      "availability": "/rentals/#availability-form"
+    },
+    "defaultImages": {
+      "weddings": "/assets/celebration-set-reference.jpg",
+      "companyEvents": "/assets/headliner-reference.jpg",
+      "default": "/assets/social-set-reference.jpg"
+    }
+  },
+  "workflow": {
+    "queueFile": "seo/keyword-seeds.json",
+    "stateFile": "seo/content-state.json",
+    "variationMapFile": "seo/keyword-variation-map.json",
+    "researchSnapshotFile": "seo/keywords-everywhere-research.json",
+    "commands": {
+      "queue": "npm run content:queue",
+      "brief": "npm run content:brief --",
+      "markDraft": "npm run content:mark --",
+      "check": "npm run check",
+      "build": "npm run build",
+      "test": "npm run test:seo"
+    }
+  },
+  "research": {
+    "country": "us",
+    "currency": "usd",
+    "dailyCreditLimit": 20,
+    "sourceOrder": ["conversions", "Search Console", "Keywords Everywhere", "live SERPs", "site structure"]
+  },
+  "publishing": {
+    "cadence": "daily",
+    "timezone": "America/New_York",
+    "dateField": "publishedDate",
+    "releaseMechanism": "GitHub Actions scheduled static rebuild through a Netlify build hook",
+    "deployProvider": "Netlify",
+    "automationFile": ".github/workflows/seo-dashboard.yml"
+  },
+  "tracking": {
+    "sitemapUrl": "https://popstarlawngames.com/sitemap.xml",
+    "robotsUrl": "https://popstarlawngames.com/robots.txt",
+    "gscProperty": "sc-domain:popstarlawngames.com",
+    "ga4PropertyId": "549156774",
+    "organicLeadEvent": "generate_lead",
+    "dashboardUrl": "https://popstarlawngames.com/seo-dashboard/"
+  }
+}
